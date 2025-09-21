@@ -12,4 +12,5 @@ public interface IRoleService {
     RoleDto save(RoleDto roleDto);
     RoleDto update (UUID id, RoleDto roleDto);
     void delete (UUID id);
+
 }

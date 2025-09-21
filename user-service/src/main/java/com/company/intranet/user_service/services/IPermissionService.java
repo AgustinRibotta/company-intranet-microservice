@@ -6,12 +6,12 @@ import java.util.UUID;
 import com.company.intranet.user_service.entities.dtos.PermissionDto;
 
 
-public interface PermissionService {
+public interface IPermissionService {
 
-    
     List<PermissionDto> findAll();
     PermissionDto findById();
     PermissionDto save(PermissionDto permissionDto);
     PermissionDto update (UUID id, PermissionDto permissionDto);
     void delete (UUID id);
+
 }
