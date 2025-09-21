@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.company.intranet.user_service.entities.RoleEntity;
+import com.company.intranet.user_service.entities.UserEntity;
 
-public interface RoleRepository extends JpaRepository <RoleEntity, UUID> {
+public interface IUserRepository extends JpaRepository <UserEntity, UUID> {
 
 }
