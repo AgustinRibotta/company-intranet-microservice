@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "permission")
-public class Permission {
+public class PermissionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -20,10 +20,10 @@ public class Permission {
     @Column(nullable = false, unique = true)
     private String name;
 
-    public Permission() {
+    public PermissionEntity() {
     }
 
-    public Permission(UUID id, String name) {
+    public PermissionEntity(UUID id, String name) {
         this.id = id;
         this.name = name;
     }

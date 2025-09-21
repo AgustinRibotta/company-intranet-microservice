@@ -31,12 +31,12 @@ public class RoleEntity {
         joinColumns = @JoinColumn(name = "role_id"),
         inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<Permission> permissions;
+    private Set<PermissionEntity> permissions;
 
     public RoleEntity() {
     }
 
-    public RoleEntity(UUID id, String name, Set<Permission> permissions) {
+    public RoleEntity(UUID id, String name, Set<PermissionEntity> permissions) {
         this.id = id;
         this.name = name;
         this.permissions = permissions;
@@ -58,11 +58,11 @@ public class RoleEntity {
         this.name = name;
     }
 
-    public Set<Permission> getPermissions() {
+    public Set<PermissionEntity> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<Permission> permissions) {
+    public void setPermissions(Set<PermissionEntity> permissions) {
         this.permissions = permissions;
     }
 
