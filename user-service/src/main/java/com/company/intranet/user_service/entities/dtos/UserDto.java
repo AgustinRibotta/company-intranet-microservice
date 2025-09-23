@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 public class UserDto {
 
@@ -16,7 +17,7 @@ public class UserDto {
     @NotBlank(message = "Name is required")
     private String name;
     
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
@@ -24,6 +25,7 @@ public class UserDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @NotEmpty(message = "Roles cannot be empty")
     private Set<RoleDto> roles;
 
     public UserDto() {

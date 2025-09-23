@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.company.intranet.user_service.entities.UserEntity;
 import com.company.intranet.user_service.entities.dtos.UserDto;
+import com.company.intranet.user_service.exeptions.UserNotFoundException;
 import com.company.intranet.user_service.mappers.IUserMapper;
 import com.company.intranet.user_service.repositories.IUserRepository;
 import com.company.intranet.user_service.services.IUserService;
@@ -25,27 +26,28 @@ public class UserServiceImp implements IUserService {
     @Override
     public List<UserDto> findAll() {
         List<UserEntity> usersEntities = this.userRepository.findAll();
-
-        List<UserDto> usersDtos = usersEntities.stream()
+        return usersEntities.stream()
                 .map(user -> {
                     UserDto dto = this.userMapper.userEntityToUserDto(user);
                     dto.setPassword(null);
                     return dto;
                 })
                 .collect(Collectors.toList());
-        return usersDtos;
     }
 
     @Override
-    public UserDto findById() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+    public UserDto findById(UUID id) {
+        UserEntity userEntity = this.userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        return this.userMapper.userEntityToUserDto(userEntity);
     }
 
     @Override
     public UserDto save(UserDto userDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+
+        UserEntity newUser = this.userMapper.userDtoUserEntity(userDto);
+        return this.userMapper.userEntityToUserDto(this.userRepository.save(newUser));        
+
     }
 
     @Override
