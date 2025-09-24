@@ -1,7 +1,7 @@
 -- =======================
 -- PERMISSIONS
 -- =======================
-INSERT INTO permission (id, name) VALUES
+INSERT INTO permission_entity (id, name) VALUES
     ('11111111-1111-1111-1111-111111111111', 'READ_USERS'),
     ('22222222-2222-2222-2222-222222222222', 'WRITE_USERS'),
     ('33333333-3333-3333-3333-333333333333', 'DELETE_USERS'),

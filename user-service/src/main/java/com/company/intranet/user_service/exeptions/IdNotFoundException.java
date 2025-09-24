@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException {
+public class IdNotFoundException extends RuntimeException {
 
-    public UserNotFoundException(UUID id) {
-        super("User not found with id: " + id);
+    public IdNotFoundException(UUID id) {
+        super("id: " + id + " not found");
     }
 }

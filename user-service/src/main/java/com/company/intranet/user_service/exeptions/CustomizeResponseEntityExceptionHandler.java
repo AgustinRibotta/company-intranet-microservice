@@ -29,7 +29,7 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
                 return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        @ExceptionHandler(UserNotFoundException.class)
+        @ExceptionHandler(IdNotFoundException.class)
         public final ResponseEntity<ErrorDetails> handleUserNotFoudExeption(Exception ex, WebRequest request)
                         throws Exception {
                 ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
@@ -39,8 +39,8 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
         }
 
         @Override
-        protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                        HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        protected ResponseEntity<Object> handleMethodArgumentNotValid(@SuppressWarnings("null") MethodArgumentNotValidException ex,
+                        @SuppressWarnings("null") HttpHeaders headers, @SuppressWarnings("null") HttpStatusCode status, @SuppressWarnings("null") WebRequest request) {
                 Map<String, String> errors = ex.getBindingResult()
                                 .getFieldErrors()
                                 .stream()
@@ -62,6 +62,7 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
         public final ResponseEntity<ErrorDetails> handleMethodArgumentTypeMismatch(
                         MethodArgumentTypeMismatchException ex, WebRequest request) {
 
+                @SuppressWarnings("null")
                 String message = String.format(
                                 "The parameter '%s' has an invalid value: '%s'. Expected type: %s",
                                 ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName());
@@ -78,6 +79,7 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
         public ResponseEntity<ErrorDetails> handleDataIntegrityViolation(
                         DataIntegrityViolationException ex, WebRequest request) {
 
+                @SuppressWarnings("null")
                 String message = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
                 String userFriendlyMessage;
 
