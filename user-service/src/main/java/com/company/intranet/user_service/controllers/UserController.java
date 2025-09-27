@@ -51,7 +51,7 @@ public class UserController {
     public ResponseEntity<UserDto> saveUser(@Valid @RequestBody UserDto userDto) {
 
         UserDto newUser = this.userService.save(userDto);
-        URI location = URI.create("/user-service/" + newUser.getId());
+        URI location = URI.create("/user-service/users/" + newUser.getId());
             
         return  ResponseEntity.created(location).body(newUser);
     }

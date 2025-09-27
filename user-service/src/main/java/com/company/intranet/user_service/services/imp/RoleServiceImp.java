@@ -41,6 +41,13 @@ public class RoleServiceImp implements IRoleService {
     }
 
     @Override
+    public RoleDto findById(UUID id) {
+        RoleEntity userEntity = this.roleRepository.findById(id)
+            .orElseThrow(() -> new IdNotFoundException(id));
+        return this.roleMapper.roleEntitiesToRoleDto(userEntity);
+    }
+
+    @Override
     public List<RoleDto> findByUserId(UUID userId) {
         UserEntity userEntity = this.userRepository.findById(userId)
             .orElseThrow(() -> new IdNotFoundException(userId));
@@ -73,5 +80,7 @@ public class RoleServiceImp implements IRoleService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
+
+
 
 }

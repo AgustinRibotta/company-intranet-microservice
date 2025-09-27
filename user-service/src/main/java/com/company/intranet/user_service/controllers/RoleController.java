@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.company.intranet.user_service.entities.dtos.RoleDto;
 import com.company.intranet.user_service.services.IRoleService;
 
-
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -38,6 +39,12 @@ public class RoleController {
         return ResponseEntity.ok().body(this.roleService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(path = "/roles/{id}")
+    public ResponseEntity<RoleDto> retriveRoleById(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(this.roleService.findById(id));
+    }
+    
 
     // @PreAuthorize("@securytiConfigUser.isUser(#id) or hasRole('ADMIN')")
     @PreAuthorize("hasRole('ADMIN') or #id == principal.username")
@@ -46,11 +53,12 @@ public class RoleController {
         return ResponseEntity.ok().body(this.roleService.findByUserId(userId));
     }
 
-    @PostMapping("path")
-    public String postMethodName(@RequestBody String entity) {
-        //TODO: process POST request
-        
-        return entity;
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(path = "/roles")
+    public ResponseEntity<RoleDto> saveRole(@RequestBody RoleDto roleDto) {
+        RoleDto newRole = this.roleService.save(roleDto);
+        URI location = URI.create("/user-service/roles/"+ roleDto.getId());
+        return ResponseEntity.created(location).body(newRole);
     }
     
     
