@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -62,14 +63,9 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
         public final ResponseEntity<ErrorDetails> handleMethodArgumentTypeMismatch(
                         MethodArgumentTypeMismatchException ex, WebRequest request) {
 
-                @SuppressWarnings("null")
-                String message = String.format(
-                                "The parameter '%s' has an invalid value: '%s'. Expected type: %s",
-                                ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName());
-
                 ErrorDetails errorDetails = new ErrorDetails(
                                 LocalDateTime.now(),
-                                message,
+                                ex.getMessage(),
                                 request.getDescription(false));
 
                 return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
@@ -97,4 +93,15 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
         }
 
+        @ExceptionHandler({ org.springframework.security.authorization.AuthorizationDeniedException.class })
+        public ResponseEntity<ErrorDetails> handleAuthorizationDenied(AuthorizationDeniedException ex,
+                                                                WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDetails);
+        }
 }

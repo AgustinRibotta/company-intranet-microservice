@@ -2,15 +2,18 @@ package com.company.intranet.user_service.exeptions;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ErrorDetails {
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
-    private String massege;
+    private String message;
     private String details;
     
-    public ErrorDetails(LocalDateTime timestamp, String massege, String details) {
+    public ErrorDetails(LocalDateTime timestamp, String message, String details) {
         this.timestamp = timestamp;
-        this.massege = massege;
+        this.message = message;
         this.details = details;
     }
 
@@ -22,12 +25,12 @@ public class ErrorDetails {
         this.timestamp = timestamp;
     }
 
-    public String getMassege() {
-        return massege;
+    public String getmessage() {
+        return message;
     }
   
-    public void setMassege(String massege) {
-        this.massege = massege;
+    public void setmessage(String message) {
+        this.message = message;
     }
 
     public String getDetails() {

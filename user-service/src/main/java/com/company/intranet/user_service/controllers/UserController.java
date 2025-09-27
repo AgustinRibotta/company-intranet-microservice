@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.company.intranet.user_service.entities.dtos.UserDto;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/user-service")
+@RequestMapping( path = "/user-service/users")
 public class UserController {
 
     final IUserService userService;
@@ -32,31 +33,37 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping()
     public ResponseEntity<List<UserDto>> retriveAllUsers() {
         return ResponseEntity.ok().body(this.userService.findAll());
     }
 
-    @GetMapping(path = "/users/user/{id}")
+    // @PreAuthorize("@securytiConfigUser.isUser(#id) or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.username")
+    @GetMapping(path = "/user/{id}")
     public ResponseEntity<UserDto> retrivUserById(@PathVariable UUID id) {
         return ResponseEntity.ok().body( this.userService.findById(id));
     }
 
-    @PostMapping(path = "/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping()
     public ResponseEntity<UserDto> saveUser(@Valid @RequestBody UserDto userDto) {
 
         UserDto newUser = this.userService.save(userDto);
-        URI location = URI.create("/user-service/users/" + newUser.getId());
+        URI location = URI.create("/user-service/" + newUser.getId());
             
         return  ResponseEntity.created(location).body(newUser);
     }
 
-    @PutMapping( path = "/users/user/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping( path = "/user/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable UUID id,@Valid @RequestBody UserDto userDto) {
         return ResponseEntity.ok(this.userService.update(id, userDto));
     }
 
-    @DeleteMapping( path = "/users/user/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping( path = "/user/{id}")
     public ResponseEntity<?> delteUser (@PathVariable UUID id){
         this.userService.delete(id);
         return ResponseEntity.noContent().build();

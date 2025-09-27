@@ -1,0 +1,36 @@
+package com.company.intranet.user_service.exeptions;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Component
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response,
+            AccessDeniedException accessDeniedException) throws IOException, ServletException {
+                ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                accessDeniedException.getMessage(),
+                request.getRequestURI()
+        );
+
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setContentType("application/json");
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+        response.getWriter().write(mapper.writeValueAsString(errorDetails));
+    }
+
+}
