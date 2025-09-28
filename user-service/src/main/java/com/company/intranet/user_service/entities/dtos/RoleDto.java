@@ -3,10 +3,14 @@ package com.company.intranet.user_service.entities.dtos;
 import java.util.Set;
 import java.util.UUID;
 
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import jakarta.validation.constraints.NotBlank;
 
 public class RoleDto {
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private UUID id;
     
     @NotBlank(message = "Name is required")

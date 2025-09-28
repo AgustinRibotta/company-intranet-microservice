@@ -54,31 +54,37 @@ public class UserServiceImp implements IUserService {
 
     @Override
     public UserDto save(UserDto userDto) {
-
         UserEntity newUser = this.userMapper.userDtoUserEntity(userDto);
+
+        Set<RoleEntity> roles = userDto.getRoles().stream()
+                .map(r -> this.roleRepository.findById(r.getId())
+                        .orElseThrow(() -> new IdNotFoundException(r.getId())))
+                .collect(Collectors.toSet());
+
+        newUser.setRoles(roles);
         newUser.setPassword(this.passwordEncoder.encode(newUser.getPassword()));
+
         newUser = this.userRepository.save(newUser);
         return this.userMapper.userEntityToUserDto(newUser);
-
     }
 
     @Override
     public UserDto update(UUID id, UserDto userDto) {
 
-        UserEntity userEntity = this.userRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(id));
 
-        userEntity.setName(userDto.getName());
-        userEntity.setEmail(userDto.getEmail());
+        userMapper.updateUserFromDto(userDto, userEntity);
 
-        Set<RoleEntity> role = userDto.getRoles().stream()
-                .map(r -> this.roleRepository.findById(r.getId()).orElseThrow(() -> new IdNotFoundException(id)))
+        Set<RoleEntity> roles = userDto.getRoles().stream()
+                .map(r -> roleRepository.findById(r.getId())
+                        .orElseThrow(() -> new IdNotFoundException(r.getId())))
                 .collect(Collectors.toSet());
+        userEntity.setRoles(roles);
 
-        userEntity.setRoles(role);
+        userEntity = userRepository.save(userEntity);
 
-        userEntity = this.userRepository.save(userEntity);
-
-        return this.userMapper.userEntityToUserDto(userEntity);
+        return userMapper.userEntityToUserDto(userEntity);
     }
 
     @Override

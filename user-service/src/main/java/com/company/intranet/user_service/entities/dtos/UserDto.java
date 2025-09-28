@@ -3,6 +3,8 @@ package com.company.intranet.user_service.entities.dtos;
 import java.util.Set;
 import java.util.UUID;
 
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -11,8 +13,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
 public class UserDto {
-
-    private UUID id;
+    
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private UUID id; 
     
     @NotBlank(message = "Name is required")
     private String name;

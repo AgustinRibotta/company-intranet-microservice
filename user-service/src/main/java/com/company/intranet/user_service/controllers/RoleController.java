@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.company.intranet.user_service.entities.dtos.RoleDto;
 import com.company.intranet.user_service.services.IRoleService;
 
+import jakarta.validation.Valid;
+
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +28,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping( path = "/user-service")
 public class RoleController {
 
+    @Autowired
     IRoleService roleService;
 
     public RoleController(IRoleService roleService) {
         this.roleService = roleService;
     }
-
 
     
     @PreAuthorize("hasRole('ADMIN')")
@@ -55,7 +58,7 @@ public class RoleController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/roles")
-    public ResponseEntity<RoleDto> saveRole(@RequestBody RoleDto roleDto) {
+    public ResponseEntity<RoleDto> saveRole(@Valid @RequestBody RoleDto roleDto) {
         RoleDto newRole = this.roleService.save(roleDto);
         URI location = URI.create("/user-service/roles/"+ roleDto.getId());
         return ResponseEntity.created(location).body(newRole);

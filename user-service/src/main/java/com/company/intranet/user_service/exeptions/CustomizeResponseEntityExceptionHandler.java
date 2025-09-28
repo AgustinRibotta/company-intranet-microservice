@@ -2,6 +2,8 @@ package com.company.intranet.user_service.exeptions;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -40,8 +42,10 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
         }
 
         @Override
-        protected ResponseEntity<Object> handleMethodArgumentNotValid(@SuppressWarnings("null") MethodArgumentNotValidException ex,
-                        @SuppressWarnings("null") HttpHeaders headers, @SuppressWarnings("null") HttpStatusCode status, @SuppressWarnings("null") WebRequest request) {
+        protected ResponseEntity<Object> handleMethodArgumentNotValid(
+                        @SuppressWarnings("null") MethodArgumentNotValidException ex,
+                        @SuppressWarnings("null") HttpHeaders headers, @SuppressWarnings("null") HttpStatusCode status,
+                        @SuppressWarnings("null") WebRequest request) {
                 Map<String, String> errors = ex.getBindingResult()
                                 .getFieldErrors()
                                 .stream()
@@ -71,18 +75,23 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
                 return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
         }
 
+        @SuppressWarnings("null")
         @ExceptionHandler(DataIntegrityViolationException.class)
         public ResponseEntity<ErrorDetails> handleDataIntegrityViolation(
                         DataIntegrityViolationException ex, WebRequest request) {
 
-                @SuppressWarnings("null")
-                String message = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
-                String userFriendlyMessage;
+                String rootMessage = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
+                String userFriendlyMessage = "Data integrity violation";
 
-                if (message.contains("USER_ENTITY(EMAIL")) {
-                        userFriendlyMessage = "Email already exists";
-                } else {
-                        userFriendlyMessage = "Data integrity violation";
+                if (rootMessage != null) {
+
+                        Pattern pattern = Pattern.compile("\\((\\w+)\\s?NULLS FIRST\\)");
+                        Matcher matcher = pattern.matcher(rootMessage);
+
+                        if (matcher.find()) {
+                                String column = matcher.group(1);
+                                userFriendlyMessage = column + " already exists";
+                        }
                 }
 
                 ErrorDetails errorDetails = new ErrorDetails(
@@ -95,13 +104,12 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
 
         @ExceptionHandler({ org.springframework.security.authorization.AuthorizationDeniedException.class })
         public ResponseEntity<ErrorDetails> handleAuthorizationDenied(AuthorizationDeniedException ex,
-                                                                WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                ex.getMessage(),
-                request.getDescription(false)
-        );
+                        WebRequest request) {
+                ErrorDetails errorDetails = new ErrorDetails(
+                                LocalDateTime.now(),
+                                ex.getMessage(),
+                                request.getDescription(false));
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDetails);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDetails);
         }
 }

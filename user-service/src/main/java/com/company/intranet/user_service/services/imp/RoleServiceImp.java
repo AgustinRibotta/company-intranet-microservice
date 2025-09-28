@@ -7,11 +7,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.company.intranet.user_service.entities.PermissionEntity;
 import com.company.intranet.user_service.entities.RoleEntity;
 import com.company.intranet.user_service.entities.UserEntity;
 import com.company.intranet.user_service.entities.dtos.RoleDto;
 import com.company.intranet.user_service.exeptions.IdNotFoundException;
 import com.company.intranet.user_service.mappers.IRoleMapper;
+import com.company.intranet.user_service.repositories.IPermissionRepository;
 import com.company.intranet.user_service.repositories.IRoleRepository;
 import com.company.intranet.user_service.repositories.IUserRepository;
 import com.company.intranet.user_service.services.IRoleService;
@@ -22,51 +24,62 @@ public class RoleServiceImp implements IRoleService {
     IRoleRepository roleRepository;
     IRoleMapper roleMapper;
     IUserRepository userRepository;
+    IPermissionRepository permissionRepository;
 
-    public RoleServiceImp(IRoleRepository roleRepository, IRoleMapper roleMapper, IUserRepository userRepository) {
+    public RoleServiceImp(IRoleRepository roleRepository, IRoleMapper roleMapper, IUserRepository userRepository,
+            IPermissionRepository permissionRepository) {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
         this.userRepository = userRepository;
+        this.permissionRepository = permissionRepository;
     }
 
     @Override
     public List<RoleDto> findAll() {
         List<RoleEntity> roleEntities = this.roleRepository.findAll();
         return roleEntities.stream()
-        .map(role -> {
-            RoleDto dto = this.roleMapper.roleEntitiesToRoleDto(role);
-            return dto;
-        })
-        .collect(Collectors.toList());
+                .map(role -> {
+                    RoleDto dto = this.roleMapper.roleEntitiesToRoleDto(role);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public RoleDto findById(UUID id) {
         RoleEntity userEntity = this.roleRepository.findById(id)
-            .orElseThrow(() -> new IdNotFoundException(id));
+                .orElseThrow(() -> new IdNotFoundException(id));
         return this.roleMapper.roleEntitiesToRoleDto(userEntity);
     }
 
     @Override
     public List<RoleDto> findByUserId(UUID userId) {
         UserEntity userEntity = this.userRepository.findById(userId)
-            .orElseThrow(() -> new IdNotFoundException(userId));
+                .orElseThrow(() -> new IdNotFoundException(userId));
 
         Set<RoleEntity> roleEntities = userEntity.getRoles();
-        
+
         return roleEntities.stream()
-        .map(role -> {
-            RoleDto dto = this.roleMapper.roleEntitiesToRoleDto(role);
-            return dto;
-        })
-        .collect(Collectors.toList());
+                .map(role -> {
+                    RoleDto dto = this.roleMapper.roleEntitiesToRoleDto(role);
+                    return dto;
+                })
+                .collect(Collectors.toList());
 
     }
 
     @Override
     public RoleDto save(RoleDto roleDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+        RoleEntity newRole = this.roleMapper.roleDtoToRoleEntity(roleDto);
+
+        Set<PermissionEntity> permissionEntities = roleDto.getPermissions().stream()
+                .map(p -> permissionRepository.findById(p.getId())
+                        .orElseThrow(() -> new IdNotFoundException(p.getId())))
+                .collect(Collectors.toSet());
+
+        newRole.setPermissions(permissionEntities);
+        newRole = this.roleRepository.save(newRole);
+        return this.roleMapper.roleEntitiesToRoleDto(newRole);
     }
 
     @Override
@@ -80,7 +93,5 @@ public class RoleServiceImp implements IRoleService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
-
-
 
 }
