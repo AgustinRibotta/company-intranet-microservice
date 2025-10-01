@@ -18,5 +18,6 @@ public interface IRoleMapper {
     RoleEntity roleDtoToRoleEntity (RoleDto dto);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "permissions", ignore = true)
     void updateRoleFromDto (RoleDto dto, @MappingTarget RoleEntity entity);
 }

@@ -84,14 +84,28 @@ public class RoleServiceImp implements IRoleService {
 
     @Override
     public RoleDto update(UUID id, RoleDto roleDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        RoleEntity roleEntity = this.roleRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(id));
+
+        this.roleMapper.updateRoleFromDto(roleDto, roleEntity);
+
+        if (roleDto.getPermissions() != null) {
+            Set<PermissionEntity> permissions = roleDto.getPermissions().stream()
+                    .map(p -> this.permissionRepository.findById(p.getId())
+                            .orElseThrow(() -> new IdNotFoundException(p.getId())))
+                    .collect(Collectors.toSet());
+            roleEntity.setPermissions(permissions);
+        }
+
+        roleEntity = this.roleRepository.save(roleEntity);
+
+        return this.roleMapper.roleEntitiesToRoleDto(roleEntity);
     }
+
 
     @Override
     public void delete(UUID id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        this.roleRepository.deleteById(id);
     }
 
 }

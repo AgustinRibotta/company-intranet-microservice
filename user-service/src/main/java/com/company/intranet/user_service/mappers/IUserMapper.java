@@ -18,5 +18,6 @@ public interface IUserMapper {
     UserEntity userDtoUserEntity(UserDto dto);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     void updateUserFromDto(UserDto dto, @MappingTarget UserEntity entity);
 }

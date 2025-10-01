@@ -71,20 +71,20 @@ public class UserServiceImp implements IUserService {
     @Override
     public UserDto update(UUID id, UserDto userDto) {
 
-        UserEntity userEntity = userRepository.findById(id)
+        UserEntity userEntity = this.userRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException(id));
 
-        userMapper.updateUserFromDto(userDto, userEntity);
+        this.userMapper.updateUserFromDto(userDto, userEntity);
+        if (userDto.getRoles() != null) {
+            Set<RoleEntity> roles = userDto.getRoles().stream()
+                    .map(r -> this.roleRepository.findById(r.getId())
+                            .orElseThrow(() -> new IdNotFoundException(r.getId())))
+                    .collect(Collectors.toSet());
+            userEntity.setRoles(roles);
+        }
+        userEntity = this.userRepository.save(userEntity);
 
-        Set<RoleEntity> roles = userDto.getRoles().stream()
-                .map(r -> roleRepository.findById(r.getId())
-                        .orElseThrow(() -> new IdNotFoundException(r.getId())))
-                .collect(Collectors.toSet());
-        userEntity.setRoles(roles);
-
-        userEntity = userRepository.save(userEntity);
-
-        return userMapper.userEntityToUserDto(userEntity);
+        return this.userMapper.userEntityToUserDto(userEntity);
     }
 
     @Override
