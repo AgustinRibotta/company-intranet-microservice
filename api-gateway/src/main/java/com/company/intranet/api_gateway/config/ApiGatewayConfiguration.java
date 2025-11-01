@@ -1,4 +1,4 @@
-package com.company.intranet.api_gateway;
+package com.company.intranet.api_gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +12,8 @@ public class ApiGatewayConfiguration {
     public RouteLocator gatewayRouter(RouteLocatorBuilder builder) {
         return builder.routes()
             .route(p -> p.path("/user-service/**")
-                .uri("lb://user-service"))        
+                .uri("lb://user-service"))
             .build();
-            
+
     }
 }

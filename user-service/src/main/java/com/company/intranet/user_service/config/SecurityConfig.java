@@ -36,7 +36,7 @@ public class SecurityConfig {
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     public SecurityConfig(CustomAccessDeniedHandler customAccessDeniedHandler,
-            CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+                          CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
         this.customAccessDeniedHandler = customAccessDeniedHandler;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
@@ -48,21 +48,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable) 
-            .authorizeHttpRequests(auth -> auth
-                // .anyRequest().permitAll()
-                .anyRequest().authenticated()
-            )
-            .httpBasic(Customizer.withDefaults())
-            // .oauth2ResourceServer(oauth2 -> oauth2
-            //     .jwt(jwt -> jwt
-            //         .decoder(jwtDecoder()) 
-            //         .jwtAuthenticationConverter(jwtAuthenticationConverter()) 
-            //     )
-            .exceptionHandling(ex -> ex
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .accessDeniedHandler(customAccessDeniedHandler)
-            );
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/webjars/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults())
+                // .oauth2ResourceServer(oauth2 -> oauth2
+                //     .jwt(jwt -> jwt
+                //         .decoder(jwtDecoder())
+                //         .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                //     )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                );
         return http.build();
     }
 
@@ -120,21 +125,21 @@ public class SecurityConfig {
     }
     */
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean 
+    @Bean
     public InMemoryUserDetailsManager userDetailsService() {
         UserDetails admin = User.withUsername("admin")
-            .password(passwordEncoder().encode("admin123"))
-            .roles("ADMIN")
-            .build();
+                .password(passwordEncoder().encode("admin123"))
+                .roles("ADMIN")
+                .build();
 
         UserDetails user = User.withUsername("user")
-            .password(passwordEncoder().encode("user123"))
-            .roles("USER")
-            .build();
+                .password(passwordEncoder().encode("user123"))
+                .roles("USER")
+                .build();
 
         return new InMemoryUserDetailsManager(admin, user);
     }
