@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.company.intranet.user_service.entities.dtos.RoleCreateDto;
 import org.springframework.stereotype.Service;
 
 import com.company.intranet.user_service.entities.PermissionEntity;
@@ -69,17 +70,18 @@ public class RoleServiceImp implements IRoleService {
     }
 
     @Override
-    public RoleDto save(RoleDto roleDto) {
-        RoleEntity newRole = this.roleMapper.roleDtoToRoleEntity(roleDto);
+    public RoleDto save(RoleCreateDto roleCreateDto) {
+        RoleEntity newRole = new RoleEntity();
+        newRole.setName(roleCreateDto.getName());
 
-        Set<PermissionEntity> permissionEntities = roleDto.getPermissions().stream()
-                .map(p -> permissionRepository.findById(p.getId())
-                        .orElseThrow(() -> new IdNotFoundException(p.getId())))
+        Set<PermissionEntity> permissionEntities = roleCreateDto.getPermissions().stream()
+                .map(id -> permissionRepository.findById(id)
+                        .orElseThrow(() -> new IdNotFoundException(id)))
                 .collect(Collectors.toSet());
 
         newRole.setPermissions(permissionEntities);
-        newRole = this.roleRepository.save(newRole);
-        return this.roleMapper.roleEntitiesToRoleDto(newRole);
+        newRole = roleRepository.save(newRole);
+        return roleMapper.roleEntitiesToRoleDto(newRole);
     }
 
     @Override

@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.company.intranet.user_service.entities.dtos.UserCreateDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,12 +54,14 @@ public class UserServiceImp implements IUserService {
     }
 
     @Override
-    public UserDto save(UserDto userDto) {
-        UserEntity newUser = this.userMapper.userDtoUserEntity(userDto);
+    public UserDto save(UserCreateDto userCreateDto) {
+        UserEntity newUser = new UserEntity();
+        newUser.setName(userCreateDto.getName());
+        newUser.setEmail(userCreateDto.getEmail());
 
-        Set<RoleEntity> roles = userDto.getRoles().stream()
-                .map(r -> this.roleRepository.findById(r.getId())
-                        .orElseThrow(() -> new IdNotFoundException(r.getId())))
+        Set<RoleEntity> roles = userCreateDto.getRoles().stream()
+                .map(r -> this.roleRepository.findById(r)
+                        .orElseThrow(() -> new IdNotFoundException(r)))
                 .collect(Collectors.toSet());
 
         newUser.setRoles(roles);

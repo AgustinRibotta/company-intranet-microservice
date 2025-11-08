@@ -3,6 +3,7 @@ package com.company.intranet.user_service.services;
 import java.util.List;
 import java.util.UUID;
 
+import com.company.intranet.user_service.entities.dtos.RoleCreateDto;
 import com.company.intranet.user_service.entities.dtos.RoleDto;
 
 public interface IRoleService {
@@ -10,7 +11,7 @@ public interface IRoleService {
     List<RoleDto> findAll();
     RoleDto findById(UUID id);
     List<RoleDto> findByUserId(UUID userId);
-    RoleDto save(RoleDto roleDto);
+    RoleDto save(RoleCreateDto roleDto);
     RoleDto update (UUID id, RoleDto roleDto);
     void delete (UUID id);
 
