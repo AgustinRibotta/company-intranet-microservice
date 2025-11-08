@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/company-intranet-microservice.iml" filepath="$PROJECT_DIR$/.idea/company-intranet-microservice.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../git-repository/company-repo/company-repo.iml" filepath="$PROJECT_DIR$/../git-repository/company-repo/company-repo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../company-repo/company-repo.iml" filepath="$PROJECT_DIR$/../company-repo/company-repo.iml" />
     </modules>
   </component>
 </project>
