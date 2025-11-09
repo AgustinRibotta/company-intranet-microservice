@@ -11,7 +11,7 @@ public interface IUserService  {
     List<UserDto> findAll();
     UserDto findById(UUID id);
     UserDto save(UserCreateDto userDto);
-    UserDto update (UUID id, UserDto userDto);
+    UserDto update (UUID id, UserCreateDto userDto);
     void delete (UUID id);
 
 }

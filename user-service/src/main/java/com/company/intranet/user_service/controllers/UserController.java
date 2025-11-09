@@ -73,8 +73,8 @@ public class UserController {
     @Operation(summary = "Update an existing User",
             description = "Accessible only to users with the ADMIN role"
     )
-    public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @Valid @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(this.userService.update(id, userDto));
+    public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @Valid @RequestBody UserCreateDto userCreateDto) {
+        return ResponseEntity.ok(this.userService.update(id, userCreateDto));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

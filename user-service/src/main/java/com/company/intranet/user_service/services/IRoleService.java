@@ -12,7 +12,7 @@ public interface IRoleService {
     RoleDto findById(UUID id);
     List<RoleDto> findByUserId(UUID userId);
     RoleDto save(RoleCreateDto roleDto);
-    RoleDto update (UUID id, RoleDto roleDto);
+    RoleDto update (UUID id, RoleCreateDto roleDto);
     void delete (UUID id);
 
 }

@@ -81,8 +81,8 @@ public class RoleController {
             description = "Accessible only to users with the ADMIN role"
     )
     @PutMapping("/roles/role/{id}")
-    public ResponseEntity<RoleDto> updateRole(@PathVariable UUID id, @Valid @RequestBody RoleDto roleDto) {
-        return ResponseEntity.ok(roleService.update(id, roleDto));
+    public ResponseEntity<RoleDto> updateRole(@PathVariable UUID id, @Valid @RequestBody RoleCreateDto roleCreateDto) {
+        return ResponseEntity.ok(roleService.update(id, roleCreateDto));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

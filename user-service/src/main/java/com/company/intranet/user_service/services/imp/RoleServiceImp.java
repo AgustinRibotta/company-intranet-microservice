@@ -85,16 +85,16 @@ public class RoleServiceImp implements IRoleService {
     }
 
     @Override
-    public RoleDto update(UUID id, RoleDto roleDto) {
+    public RoleDto update(UUID id, RoleCreateDto roleCreateDto) {
         RoleEntity roleEntity = this.roleRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException(id));
 
-        this.roleMapper.updateRoleFromDto(roleDto, roleEntity);
+        roleEntity.setName(roleCreateDto.getName());
 
-        if (roleDto.getPermissions() != null) {
-            Set<PermissionEntity> permissions = roleDto.getPermissions().stream()
-                    .map(p -> this.permissionRepository.findById(p.getId())
-                            .orElseThrow(() -> new IdNotFoundException(p.getId())))
+        if (roleCreateDto.getPermissions() != null) {
+            Set<PermissionEntity> permissions = roleCreateDto.getPermissions().stream()
+                    .map(p -> this.permissionRepository.findById(p)
+                            .orElseThrow(() -> new IdNotFoundException(p)))
                     .collect(Collectors.toSet());
             roleEntity.setPermissions(permissions);
         }

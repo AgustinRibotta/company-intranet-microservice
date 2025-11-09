@@ -65,26 +65,31 @@ public class UserServiceImp implements IUserService {
                 .collect(Collectors.toSet());
 
         newUser.setRoles(roles);
-        newUser.setPassword(this.passwordEncoder.encode(newUser.getPassword()));
+        newUser.setPassword(this.passwordEncoder.encode(userCreateDto.getPassword()));
 
         newUser = this.userRepository.save(newUser);
         return this.userMapper.userEntityToUserDto(newUser);
     }
 
     @Override
-    public UserDto update(UUID id, UserDto userDto) {
+    public UserDto update(UUID id, UserCreateDto userCreateDto) {
 
         UserEntity userEntity = this.userRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException(id));
 
-        this.userMapper.updateUserFromDto(userDto, userEntity);
-        if (userDto.getRoles() != null) {
-            Set<RoleEntity> roles = userDto.getRoles().stream()
-                    .map(r -> this.roleRepository.findById(r.getId())
-                            .orElseThrow(() -> new IdNotFoundException(r.getId())))
+        userEntity.setName(userCreateDto.getName());
+        userEntity.setEmail(userCreateDto.getEmail());
+
+        if (userCreateDto.getRoles() != null) {
+            Set<RoleEntity> roles = userCreateDto.getRoles().stream()
+                    .map(r -> this.roleRepository.findById(r)
+                            .orElseThrow(() -> new IdNotFoundException(r)))
                     .collect(Collectors.toSet());
             userEntity.setRoles(roles);
         }
+
+        userEntity.setPassword(this.passwordEncoder.encode(userCreateDto.getPassword()));
+
         userEntity = this.userRepository.save(userEntity);
 
         return this.userMapper.userEntityToUserDto(userEntity);
