@@ -8,6 +8,8 @@
         <option value="$PROJECT_DIR$/user-service/pom.xml" />
         <option value="$PROJECT_DIR$/eureka-neming-server/pom.xml" />
         <option value="$PROJECT_DIR$/spring-cloud-config-service/pom.xml" />
+        <option value="$PROJECT_DIR$/auth-service/auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/auth-service/pom.xml" />
       </list>
     </option>
   </component>
