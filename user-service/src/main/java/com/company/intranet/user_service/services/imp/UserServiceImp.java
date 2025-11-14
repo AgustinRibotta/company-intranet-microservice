@@ -5,7 +5,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.company.intranet.user_service.entities.dtos.LoginResponse;
+import com.company.intranet.user_service.entities.dtos.LoginRequest;
 import com.company.intranet.user_service.entities.dtos.UserCreateDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -98,6 +101,27 @@ public class UserServiceImp implements IUserService {
     @Override
     public void delete(UUID id) {
         this.userRepository.deleteById(id);
+    }
+
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+
+        UserEntity authUser = this.userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new EntityNotFoundException("User with email not found"));
+
+        if (!passwordEncoder.matches(request.getPassword(), authUser.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        Set<String> rolesName = authUser.getRoles().stream()
+                .map(RoleEntity::getName)
+                .collect(Collectors.toSet());
+
+        return new LoginResponse(
+                authUser.getEmail(),
+                rolesName
+        );
     }
 
 }

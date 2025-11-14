@@ -1,5 +1,6 @@
 package com.company.intranet.user_service.repositories;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.company.intranet.user_service.entities.UserEntity;
 
 public interface IUserRepository extends JpaRepository <UserEntity, UUID> {
-
+    Optional<UserEntity> findByEmail(String email);
 }

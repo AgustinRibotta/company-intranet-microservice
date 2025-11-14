@@ -3,6 +3,8 @@ package com.company.intranet.user_service.services;
 import java.util.List;
 import java.util.UUID;
 
+import com.company.intranet.user_service.entities.dtos.LoginResponse;
+import com.company.intranet.user_service.entities.dtos.LoginRequest;
 import com.company.intranet.user_service.entities.dtos.UserCreateDto;
 import com.company.intranet.user_service.entities.dtos.UserDto;
 
@@ -13,5 +15,6 @@ public interface IUserService  {
     UserDto save(UserCreateDto userDto);
     UserDto update (UUID id, UserCreateDto userDto);
     void delete (UUID id);
+    LoginResponse login (LoginRequest request);
 
 }

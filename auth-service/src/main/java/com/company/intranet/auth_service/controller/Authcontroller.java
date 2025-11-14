@@ -1,5 +1,7 @@
 package com.company.intranet.auth_service.controller;
 
+import com.company.intranet.auth_service.dto.AuthenticationRequest;
+import com.company.intranet.auth_service.dto.AuthenticationResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Authcontroller {
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> createToken (@RequestBody AuthenticationResponse request) {
+    public ResponseEntity<AuthenticationResponse> createToken (@RequestBody AuthenticationRequest request) {
 
     }
 }
