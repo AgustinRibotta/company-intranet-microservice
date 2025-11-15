@@ -2,23 +2,24 @@ package com.company.intranet.auth_service.dto;
 
 public class AuthenticationRequest {
 
-    private String susername;
+    private String email;
+
     private String password;
 
     public AuthenticationRequest() {
     }
 
-    public AuthenticationRequest(String susername, String password) {
-        this.susername = susername;
+    public AuthenticationRequest(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    public String getSusername() {
-        return susername;
+    public String getEmail() {
+        return email;
     }
 
-    public void setSusername(String susername) {
-        this.susername = susername;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

@@ -5,8 +5,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-import com.company.intranet.user_service.entities.dtos.LoginResponse;
-import com.company.intranet.user_service.entities.dtos.LoginRequest;
+import com.company.intranet.user_service.entities.dtos.UserAuthenticationResponse;
+import com.company.intranet.user_service.entities.dtos.UserAuthenticationRequest;
 import com.company.intranet.user_service.entities.dtos.UserCreateDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<LoginResponse> login (@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<UserAuthenticationResponse> login (@Valid @RequestBody UserAuthenticationRequest request) {
         return ResponseEntity.ok().body(this.userService.login(request));
     }
 

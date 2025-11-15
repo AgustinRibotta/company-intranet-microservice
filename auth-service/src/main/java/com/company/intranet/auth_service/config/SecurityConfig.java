@@ -10,18 +10,21 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
+
     @Value("${jwt.secret}")
     private String secretKey;
 
-    // Defines the main security filter chain that configures HTTP security
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated()
-                );
-        return http.build();
-    }
 
-}
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            http
+                    .csrf(csrf -> csrf.disable())
+                    .authorizeHttpRequests(auth -> auth
+                            .anyRequest().permitAll()
+                    )
+                    .formLogin(fl -> fl.disable())
+                    .httpBasic(hb -> hb.disable());
+
+            return http.build();
+        }
+    }

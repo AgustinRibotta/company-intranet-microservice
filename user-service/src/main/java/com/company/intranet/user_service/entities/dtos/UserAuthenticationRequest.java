@@ -3,7 +3,7 @@ package com.company.intranet.user_service.entities.dtos;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public class LoginRequest {
+public class UserAuthenticationRequest {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
@@ -12,10 +12,10 @@ public class LoginRequest {
     @NotBlank(message = "Password is required")
     private String password;
 
-    public LoginRequest() {
+    public UserAuthenticationRequest() {
     }
 
-    public LoginRequest(String email, String password) {
+    public UserAuthenticationRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }

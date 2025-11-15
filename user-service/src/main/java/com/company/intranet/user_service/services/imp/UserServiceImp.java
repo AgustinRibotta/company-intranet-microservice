@@ -5,8 +5,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.company.intranet.user_service.entities.dtos.LoginResponse;
-import com.company.intranet.user_service.entities.dtos.LoginRequest;
+import com.company.intranet.user_service.entities.dtos.UserAuthenticationResponse;
+import com.company.intranet.user_service.entities.dtos.UserAuthenticationRequest;
 import com.company.intranet.user_service.entities.dtos.UserCreateDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -105,7 +105,7 @@ public class UserServiceImp implements IUserService {
 
 
     @Override
-    public LoginResponse login(LoginRequest request) {
+    public UserAuthenticationResponse login(UserAuthenticationRequest request) {
 
         UserEntity authUser = this.userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("User with email not found"));
@@ -118,7 +118,7 @@ public class UserServiceImp implements IUserService {
                 .map(RoleEntity::getName)
                 .collect(Collectors.toSet());
 
-        return new LoginResponse(
+        return new UserAuthenticationResponse(
                 authUser.getEmail(),
                 rolesName
         );

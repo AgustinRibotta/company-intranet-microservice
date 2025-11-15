@@ -2,16 +2,16 @@ package com.company.intranet.user_service.entities.dtos;
 
 import java.util.Set;
 
-public class LoginResponse {
+public class UserAuthenticationResponse {
 
     private String email;
 
     private Set<String> rolesName;
 
-    public LoginResponse() {
+    public UserAuthenticationResponse() {
     }
 
-    public LoginResponse(String email, Set<String> rolesName) {
+    public UserAuthenticationResponse(String email, Set<String> rolesName) {
         this.email = email;
 
         this.rolesName = rolesName;
