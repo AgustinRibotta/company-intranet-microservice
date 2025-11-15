@@ -119,6 +119,7 @@ public class UserServiceImp implements IUserService {
                 .collect(Collectors.toSet());
 
         return new UserAuthenticationResponse(
+                authUser.getId(),
                 authUser.getEmail(),
                 rolesName
         );

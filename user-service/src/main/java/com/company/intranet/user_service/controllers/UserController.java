@@ -54,8 +54,7 @@ public class UserController {
         return ResponseEntity.ok().body(this.userService.findAll());
     }
 
-    // @PreAuthorize("@securytiConfigUser.isUser(#id) or hasRole('ADMIN')")
-    @PreAuthorize("hasRole('ADMIN') or #id == principal.username")
+    @PreAuthorize("@securityConfigUser.isUser(#id) or hasRole('ADMIN')")
     @Operation(summary = "Retrieve user by ID",
             description = "Accessible to ADMIN users or the user themselves"
     )

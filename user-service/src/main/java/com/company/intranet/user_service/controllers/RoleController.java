@@ -56,7 +56,7 @@ public class RoleController {
         return ResponseEntity.ok(roleService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userId == principal.username")
+    @PreAuthorize("@securityConfigUser.isUser(#userId) or hasRole('ADMIN')")
     @Operation(summary = "Retrieve roles by user ID",
             description = "Accessible to ADMIN users or the user themselves"
     )

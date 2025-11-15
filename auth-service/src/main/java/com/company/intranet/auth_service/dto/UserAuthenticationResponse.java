@@ -1,8 +1,11 @@
 package com.company.intranet.auth_service.dto;
 
 import java.util.Set;
+import java.util.UUID;
 
 public class UserAuthenticationResponse {
+
+    private UUID id;
 
     private String email;
 
@@ -11,10 +14,19 @@ public class UserAuthenticationResponse {
     public UserAuthenticationResponse() {
     }
 
-    public UserAuthenticationResponse(String email, Set<String> rolesName) {
+    public UserAuthenticationResponse(UUID id, String email, Set<String> rolesName) {
+        this.id = id;
         this.email = email;
 
         this.rolesName = rolesName;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getEmail() {
@@ -33,4 +45,6 @@ public class UserAuthenticationResponse {
     public void setRolesName(Set<String> rolesName) {
         this.rolesName = rolesName;
     }
+
+
 }

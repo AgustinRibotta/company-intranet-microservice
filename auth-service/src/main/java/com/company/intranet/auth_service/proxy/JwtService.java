@@ -23,6 +23,7 @@ public class JwtService {
         Claims claims = Jwts.claims().setSubject(userDetails.getEmail());
 
         claims.put("roles", userDetails.getRolesName());
+        claims.put("userId", userDetails.getId());
 
         return Jwts.builder()
                 .setClaims(claims)

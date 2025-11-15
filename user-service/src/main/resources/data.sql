@@ -42,8 +42,8 @@ INSERT INTO role_permissions (role_id, permission_id) VALUES
 -- =======================
 INSERT INTO user_entity (id, name, email, password) VALUES
     ('bbbbbbb1-bbbb-bbbb-bbbb-bbbbbbbbbbb1', 'Alice Admin', 'alice.admin@example.com', '$2a$12$GHKyaKjm9Hf6LVFLN2U88OGUuvqv8JwgSqQAf/q9n2YhTsfev60.O'),
-    ('bbbbbbb2-bbbb-bbbb-bbbb-bbbbbbbbbbb2', 'Bob Manager', 'bob.manager@example.com', '{noop}manager123'),
-    ('bbbbbbb3-bbbb-bbbb-bbbb-bbbbbbbbbbb3', 'Charlie User', 'charlie.user@example.com', '{noop}user123');
+    ('bbbbbbb2-bbbb-bbbb-bbbb-bbbbbbbbbbb2', 'Bob Manager', 'bob.manager@example.com', '$2a$12$GHKyaKjm9Hf6LVFLN2U88OGUuvqv8JwgSqQAf/q9n2YhTsfev60.O'),
+    ('bbbbbbb3-bbbb-bbbb-bbbb-bbbbbbbbbbb3', 'Charlie User', 'charlie.user@example.com', '$2a$12$GHKyaKjm9Hf6LVFLN2U88OGUuvqv8JwgSqQAf/q9n2YhTsfev60.O');
 
 -- =======================
 -- USER_ROLES

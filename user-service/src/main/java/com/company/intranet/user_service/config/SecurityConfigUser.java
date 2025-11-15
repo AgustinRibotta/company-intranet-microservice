@@ -6,19 +6,23 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
-public class UserSecurityConfig {
+public class SecurityConfigUser {
 
     @Transactional
-    public boolean isUser(Long requestedId) {
+    public boolean isUser(UUID requestedId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             return false;
         }
 
-        Long userIdFromToken = ((JwtAuthenticationToken) authentication)
-                                .getToken()
-                                .getClaim("userId");
+        String userIdStr = ((JwtAuthenticationToken) authentication)
+                .getToken()
+                .getClaim("userId");
+
+        UUID userIdFromToken = UUID.fromString(userIdStr);
 
         return requestedId.equals(userIdFromToken);
     }
