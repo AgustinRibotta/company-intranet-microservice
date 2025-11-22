@@ -77,15 +77,16 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            var roles = jwt.getClaimAsStringList("roles");
-            if (roles == null) roles = Collections.emptyList();
 
-            return roles.stream()
-                    .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role)
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+            var permissions = jwt.getClaimAsStringList("permissions");
+            if (permissions == null) permissions = Collections.emptyList();
+
+            return permissions.stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
         });
+
         return converter;
     }
 

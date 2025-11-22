@@ -37,7 +37,7 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('CREATE_USERS')")
     @Operation(
             summary = "Retrieve all roles",
             description = "Accessible only to users with the ADMIN role"
@@ -47,7 +47,7 @@ public class RoleController {
         return ResponseEntity.ok(roleService.findAll());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('READ_ROLES')")
     @Operation(summary = "Retrieve a role by ID",
             description = "Accessible only to users with the ADMIN role"
     )
@@ -56,7 +56,7 @@ public class RoleController {
         return ResponseEntity.ok(roleService.findById(id));
     }
 
-    @PreAuthorize("@securityConfigUser.isUser(#userId) or hasRole('ADMIN')")
+    @PreAuthorize("@securityConfigUser.isUser(#userId) or hasAuthority('READ_ROLES')")
     @Operation(summary = "Retrieve roles by user ID",
             description = "Accessible to ADMIN users or the user themselves"
     )
@@ -65,7 +65,7 @@ public class RoleController {
         return ResponseEntity.ok(roleService.findByUserId(userId));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('CREATE_ROLES')")
     @Operation(summary = "Create a new role",
             description = "Accessible only to users with the ADMIN role"
     )
@@ -76,7 +76,7 @@ public class RoleController {
         return ResponseEntity.created(location).body(newRole);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('UPDATE_ROLES')")
     @Operation(summary = "Update an existing role",
             description = "Accessible only to users with the ADMIN role"
     )
@@ -85,7 +85,7 @@ public class RoleController {
         return ResponseEntity.ok(roleService.update(id, roleCreateDto));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('DELETE_ROLES')")
     @Operation(summary = "Delete a role",
             description = "Accessible only to users with the ADMIN role"
     )

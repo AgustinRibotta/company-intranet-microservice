@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.company.intranet.user_service.entities.PermissionEntity;
 import com.company.intranet.user_service.entities.dtos.UserAuthenticationResponse;
 import com.company.intranet.user_service.entities.dtos.UserAuthenticationRequest;
 import com.company.intranet.user_service.entities.dtos.UserCreateDto;
@@ -118,10 +119,16 @@ public class UserServiceImp implements IUserService {
                 .map(RoleEntity::getName)
                 .collect(Collectors.toSet());
 
+        Set<String> permissionsName = authUser.getRoles().stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(PermissionEntity::getName)
+                .collect(Collectors.toSet());
+
         return new UserAuthenticationResponse(
                 authUser.getId(),
                 authUser.getEmail(),
-                rolesName
+                rolesName,
+                permissionsName
         );
     }
 

@@ -44,7 +44,7 @@ public class UserController {
         return ResponseEntity.ok().body(this.userService.login(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('READ_USERS')")
     @Operation(
             summary = "Retrive all User",
             description = "Accessible only to users with the ADMIN role"
@@ -54,7 +54,7 @@ public class UserController {
         return ResponseEntity.ok().body(this.userService.findAll());
     }
 
-    @PreAuthorize("@securityConfigUser.isUser(#id) or hasRole('ADMIN')")
+    @PreAuthorize("@securityConfigUser.isUser(#id) or hasAuthority('READ_USERS')")
     @Operation(summary = "Retrieve user by ID",
             description = "Accessible to ADMIN users or the user themselves"
     )
@@ -63,7 +63,7 @@ public class UserController {
         return ResponseEntity.ok().body(this.userService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('CREATE_USERS')")
     @PostMapping()
     @Operation(summary = "Create a new User",
             description = "Accessible only to users with the ADMIN role"
@@ -74,7 +74,7 @@ public class UserController {
         return ResponseEntity.created(location).body(newUser);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('WRITE_USERS')")
     @PutMapping(path = "/user/{id}")
     @Operation(summary = "Update an existing User",
             description = "Accessible only to users with the ADMIN role"
@@ -83,7 +83,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.update(id, userCreateDto));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('DELETE_USERS')")
     @DeleteMapping(path = "/user/{id}")
     @Operation(summary = "Delete a User",
             description = "Accessible only to users with the ADMIN role"

@@ -111,11 +111,11 @@ Microservices Practice Project for Spring
 
 • Spring Boot
 
-• Spring Cloud 
+• Spring Cloud
 
-• JWT 
+• JWT
 
-• Feign 
+• Feign
 
 • Swagger
 
