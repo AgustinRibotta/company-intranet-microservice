@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
         name = "user-service",
-        url = "http://localhost:8080",
         configuration = UserServiceFeignConfig.class
 )
 public interface UserServiceProxy {
 
-    @PostMapping("/auth")
-    public ResponseEntity<UserAuthenticationResponse> login (@RequestBody AuthenticationRequest request);
+    @PostMapping("/user-service/users/valid")
+    public ResponseEntity<UserAuthenticationResponse> login(@RequestBody AuthenticationRequest request);
 }

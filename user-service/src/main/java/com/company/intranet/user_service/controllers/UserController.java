@@ -39,7 +39,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/valid")
     public ResponseEntity<UserAuthenticationResponse> login (@Valid @RequestBody UserAuthenticationRequest request) {
         return ResponseEntity.ok().body(this.userService.login(request));
     }

@@ -49,7 +49,7 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/webjars/**",
-                                "/user-service/users/auth"
+                                "/user-service/users/valid"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/user-service")
+@RequestMapping("/user-service/roles")
 @Tag(name = "Roles", description = "Role management operations")
 public class RoleController {
 
@@ -42,7 +42,7 @@ public class RoleController {
             summary = "Retrieve all roles",
             description = "Accessible only to users with the ADMIN role"
     )
-    @GetMapping("/roles")
+    @GetMapping()
     public ResponseEntity<List<RoleDto>> getAllRoles() {
         return ResponseEntity.ok(roleService.findAll());
     }
@@ -51,7 +51,7 @@ public class RoleController {
     @Operation(summary = "Retrieve a role by ID",
             description = "Accessible only to users with the ADMIN role"
     )
-    @GetMapping("/roles/role/{id}")
+    @GetMapping("/role/{id}")
     public ResponseEntity<RoleDto> getRoleById(@PathVariable UUID id) {
         return ResponseEntity.ok(roleService.findById(id));
     }
@@ -69,7 +69,7 @@ public class RoleController {
     @Operation(summary = "Create a new role",
             description = "Accessible only to users with the ADMIN role"
     )
-    @PostMapping("/roles")
+    @PostMapping()
     public ResponseEntity<RoleDto> createRole(@Valid @RequestBody RoleCreateDto roleCreateDto) {
         RoleDto newRole = roleService.save(roleCreateDto);
         URI location = URI.create("/user-service/roles/" + newRole.getId());
@@ -80,7 +80,7 @@ public class RoleController {
     @Operation(summary = "Update an existing role",
             description = "Accessible only to users with the ADMIN role"
     )
-    @PutMapping("/roles/role/{id}")
+    @PutMapping("/role/{id}")
     public ResponseEntity<RoleDto> updateRole(@PathVariable UUID id, @Valid @RequestBody RoleCreateDto roleCreateDto) {
         return ResponseEntity.ok(roleService.update(id, roleCreateDto));
     }
@@ -89,7 +89,7 @@ public class RoleController {
     @Operation(summary = "Delete a role",
             description = "Accessible only to users with the ADMIN role"
     )
-    @DeleteMapping("/roles/role/{id}")
+    @DeleteMapping("/role/{id}")
     public ResponseEntity<Void> deleteRole(@PathVariable UUID id) {
         roleService.delete(id);
         return ResponseEntity.noContent().build();

@@ -1,4 +1,4 @@
-package com.company.intranet.auth_service.proxy;
+package com.company.intranet.auth_service.service;
 
 import com.company.intranet.auth_service.dto.UserAuthenticationResponse;
 import io.jsonwebtoken.Claims;
