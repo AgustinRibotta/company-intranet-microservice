@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/auth-service")
 public class AuthController {
 
     private final UserServiceProxy userServiceProxy;

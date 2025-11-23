@@ -17,11 +17,29 @@ public class ApiGatewayConfiguration {
         return builder.routes()
 
                 .route("auth-service", r -> r
-                        .path("/auth/login")
+                        .path("/auth-service/login")
                         .uri("lb://auth-service"))
 
-                .route("user-auth-route", r -> r
-                        .path("/user-service/users/valid")
+                .route("auth-service-control-rout", r -> r
+                        .path("/auth-service/swagger-ui/**",
+                                "/auth-service/v3/api-docs/**",
+                                "/auth-service/swagger-ui.html",
+                                "/auth-service/webjars/**",
+                                "/auth-service/actuator",
+                                "/auth-service/actuator/**")
+                        .filters(f -> f
+                                .filter(internalTokenFilter))
+                        .uri("lb://auth-service"))
+
+                .route("user-service-control-route", r -> r
+                        .path("/user-service/swagger-ui/**",
+                                "/user-service/v3/api-docs/**",
+                                "/user-service/swagger-ui.html",
+                                "/user-service/webjars/**",
+                                "/user-service/actuator",
+                                "/user-service/actuator/**",
+                                "/user-service/users/valid" // auth-service -> user-service
+                                )
                         .filters(f -> f
                                 .filter(internalTokenFilter))
                         .uri("lb://user-service"))

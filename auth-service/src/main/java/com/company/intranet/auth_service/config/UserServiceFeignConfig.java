@@ -2,15 +2,20 @@ package com.company.intranet.auth_service.config;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class UserServiceFeignConfig implements RequestInterceptor {
 
-    private static final String INTERNAL_TOKEN = "mi-token-secreto";
+    @Value("${internal.token}")
+    private String INTERNAL_TOKEN;
+
+    @Value("${header.name}")
+    private String headerName;
 
     @Override
     public void apply(RequestTemplate template) {
-        template.header("X-Internal-Token", INTERNAL_TOKEN);
+        template.header(headerName, INTERNAL_TOKEN);
     }
 }

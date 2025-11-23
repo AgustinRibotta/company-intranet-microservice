@@ -3,6 +3,7 @@ package com.company.intranet.api_gateway.filters;
 import com.company.intranet.api_gateway.exeption.ErrorDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.HttpStatus;
@@ -15,11 +16,17 @@ import java.time.LocalDateTime;
 @Component
 public class InternalTokenFilter implements GatewayFilter {
 
-    private static final String INTERNAL_TOKEN = "mi-token-secreto";
+    @Value("${internal.token}")
+    private String INTERNAL_TOKEN;
+
+    @Value("${header.name}")
+    private String headerName;
+
+//    private static final String INTERNAL_TOKEN = internalToken;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String token = exchange.getRequest().getHeaders().getFirst("X-Internal-Token");
+        String token = exchange.getRequest().getHeaders().getFirst(headerName);
 
         if (token == null || !INTERNAL_TOKEN.equals(token)) {
             ErrorDetails errorDetails = new ErrorDetails(
