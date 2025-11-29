@@ -6,7 +6,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import com.company.intranet.user_service.entities.PermissionEntity;
-import com.company.intranet.user_service.entities.dtos.PermissionDto;
+import com.company.intranet.user_service.dtos.response.PermissionDto;
 
 @Mapper(componentModel = "spring")
 public interface IPermissionMapper {

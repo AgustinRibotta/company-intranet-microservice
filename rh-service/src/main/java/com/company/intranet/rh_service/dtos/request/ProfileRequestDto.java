@@ -1,4 +1,4 @@
-package com.company.intranet.rh_service.entities.dtos;
+package com.company.intranet.rh_service.dtos.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;

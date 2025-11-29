@@ -10,7 +10,6 @@
         <module name="eureka-neming-server" />
         <module name="auth-service" />
         <module name="spring-cloud-config-service" />
-        <module name="rh-service" />
       </profile>
       <profile name="Annotation profile for rh-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -19,6 +18,7 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.3/mapstruct-processor-1.6.3.jar" />
         </processorPath>
+        <module name="rh-service" />
         <module name="user-service" />
       </profile>
     </annotationProcessing>

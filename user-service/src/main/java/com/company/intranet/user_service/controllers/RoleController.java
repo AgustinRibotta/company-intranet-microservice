@@ -1,12 +1,12 @@
 package com.company.intranet.user_service.controllers;
 
-import com.company.intranet.user_service.entities.dtos.RoleCreateDto;
+import com.company.intranet.user_service.dtos.request.RoleCreateDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.company.intranet.user_service.entities.dtos.RoleDto;
+import com.company.intranet.user_service.dtos.response.RoleDto;
 import com.company.intranet.user_service.services.IRoleService;
 
 import jakarta.validation.Valid;

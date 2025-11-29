@@ -1,4 +1,4 @@
-package com.company.intranet.user_service.entities.dtos;
+package com.company.intranet.user_service.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

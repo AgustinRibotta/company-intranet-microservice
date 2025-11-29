@@ -1,5 +1,6 @@
-package com.company.intranet.rh_service.entities.dtos;
+package com.company.intranet.rh_service.dtos.request;
 
+import com.company.intranet.rh_service.dtos.response.DepartmentResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

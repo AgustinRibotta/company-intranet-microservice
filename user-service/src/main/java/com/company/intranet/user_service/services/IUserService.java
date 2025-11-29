@@ -3,10 +3,10 @@ package com.company.intranet.user_service.services;
 import java.util.List;
 import java.util.UUID;
 
-import com.company.intranet.user_service.entities.dtos.UserAuthenticationResponse;
-import com.company.intranet.user_service.entities.dtos.UserAuthenticationRequest;
-import com.company.intranet.user_service.entities.dtos.UserCreateDto;
-import com.company.intranet.user_service.entities.dtos.UserDto;
+import com.company.intranet.user_service.dtos.UserAuthenticationResponse;
+import com.company.intranet.user_service.dtos.UserAuthenticationRequest;
+import com.company.intranet.user_service.dtos.request.UserCreateDto;
+import com.company.intranet.user_service.dtos.response.UserDto;
 
 public interface IUserService  {
 

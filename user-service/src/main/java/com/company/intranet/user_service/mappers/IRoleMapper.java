@@ -6,7 +6,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import com.company.intranet.user_service.entities.RoleEntity;
-import com.company.intranet.user_service.entities.dtos.RoleDto;
+import com.company.intranet.user_service.dtos.response.RoleDto;
 
 @Mapper(componentModel = "spring", uses = {IPermissionMapper.class})
 public interface IRoleMapper {

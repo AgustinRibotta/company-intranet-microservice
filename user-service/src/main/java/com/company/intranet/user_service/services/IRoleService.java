@@ -3,8 +3,8 @@ package com.company.intranet.user_service.services;
 import java.util.List;
 import java.util.UUID;
 
-import com.company.intranet.user_service.entities.dtos.RoleCreateDto;
-import com.company.intranet.user_service.entities.dtos.RoleDto;
+import com.company.intranet.user_service.dtos.request.RoleCreateDto;
+import com.company.intranet.user_service.dtos.response.RoleDto;
 
 public interface IRoleService {
 

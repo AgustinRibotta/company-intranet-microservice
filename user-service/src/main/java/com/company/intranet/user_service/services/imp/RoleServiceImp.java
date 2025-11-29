@@ -5,13 +5,13 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.company.intranet.user_service.entities.dtos.RoleCreateDto;
+import com.company.intranet.user_service.dtos.request.RoleCreateDto;
 import org.springframework.stereotype.Service;
 
 import com.company.intranet.user_service.entities.PermissionEntity;
 import com.company.intranet.user_service.entities.RoleEntity;
 import com.company.intranet.user_service.entities.UserEntity;
-import com.company.intranet.user_service.entities.dtos.RoleDto;
+import com.company.intranet.user_service.dtos.response.RoleDto;
 import com.company.intranet.user_service.exeptions.IdNotFoundException;
 import com.company.intranet.user_service.mappers.IRoleMapper;
 import com.company.intranet.user_service.repositories.IPermissionRepository;

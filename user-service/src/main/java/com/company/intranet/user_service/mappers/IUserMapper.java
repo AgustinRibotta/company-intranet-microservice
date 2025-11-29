@@ -6,7 +6,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import com.company.intranet.user_service.entities.UserEntity;
-import com.company.intranet.user_service.entities.dtos.UserDto;
+import com.company.intranet.user_service.dtos.response.UserDto;
 
 @Mapper(componentModel = "spring", uses = {IRoleMapper.class} )
 public interface IUserMapper {

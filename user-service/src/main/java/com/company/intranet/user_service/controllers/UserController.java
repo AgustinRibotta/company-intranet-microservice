@@ -5,16 +5,16 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-import com.company.intranet.user_service.entities.dtos.UserAuthenticationResponse;
-import com.company.intranet.user_service.entities.dtos.UserAuthenticationRequest;
-import com.company.intranet.user_service.entities.dtos.UserCreateDto;
+import com.company.intranet.user_service.dtos.UserAuthenticationResponse;
+import com.company.intranet.user_service.dtos.UserAuthenticationRequest;
+import com.company.intranet.user_service.dtos.request.UserCreateDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.company.intranet.user_service.entities.dtos.UserDto;
+import com.company.intranet.user_service.dtos.response.UserDto;
 import com.company.intranet.user_service.services.IUserService;
 
 import jakarta.validation.Valid;
