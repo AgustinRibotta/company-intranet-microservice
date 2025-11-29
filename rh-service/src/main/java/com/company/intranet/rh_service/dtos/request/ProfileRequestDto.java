@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.UUID;
 
 public class ProfileRequestDto {
@@ -31,12 +30,12 @@ public class ProfileRequestDto {
     private Number salary;
 
     @NotEmpty(message = "Department cannot be empty")
-    private Set<UUID> department;
+    private UUID departmentId;
 
     public ProfileRequestDto() {
     }
 
-    public ProfileRequestDto(UUID userId, String email, String firstName, String lastName, LocalDate birthday, LocalDate startDate, String position, Number salary, Set<UUID> department) {
+    public ProfileRequestDto(UUID userId, String email, String firstName, String lastName, LocalDate birthday, LocalDate startDate, String position, Number salary, UUID department) {
         this.userId = userId;
         this.email = email;
         this.firstName = firstName;
@@ -45,7 +44,7 @@ public class ProfileRequestDto {
         this.startDate = startDate;
         this.position = position;
         this.salary = salary;
-        this.department = department;
+        this.departmentId = department;
     }
 
     public UUID getUserId() {
@@ -112,11 +111,11 @@ public class ProfileRequestDto {
         this.salary = salary;
     }
 
-    public Set<UUID> getDepartment() {
-        return department;
+    public UUID getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(Set<UUID> department) {
-        this.department = department;
+    public void setDepartmentId(UUID departmentId) {
+        this.departmentId = departmentId;
     }
 }

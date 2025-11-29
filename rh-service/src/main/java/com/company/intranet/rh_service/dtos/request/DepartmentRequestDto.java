@@ -1,4 +1,4 @@
-package com.company.intranet.rh_service.dtos.response;
+package com.company.intranet.rh_service.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 

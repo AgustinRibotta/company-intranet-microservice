@@ -1,13 +1,11 @@
-package com.company.intranet.rh_service.dtos.request;
+package com.company.intranet.rh_service.dtos.response;
 
-import com.company.intranet.rh_service.dtos.response.DepartmentResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.UUID;
 
 public class ProfileResponseDto {
@@ -35,12 +33,12 @@ public class ProfileResponseDto {
     private Number salary;
 
     @NotEmpty(message = "Department cannot be empty")
-    private Set<DepartmentResponseDto> department;
+    private DepartmentResponseDto department;
 
     public ProfileResponseDto() {
     }
 
-    public ProfileResponseDto(UUID id, UUID userId, String email, String firstName, String lastName, LocalDate birthday, LocalDate startDate, String position, Number salary, Set<DepartmentResponseDto> department) {
+    public ProfileResponseDto(UUID id, UUID userId, String email, String firstName, String lastName, LocalDate birthday, LocalDate startDate, String position, Number salary, DepartmentResponseDto department) {
         this.id = id;
         this.userId = userId;
         this.email = email;
@@ -125,11 +123,11 @@ public class ProfileResponseDto {
         this.salary = salary;
     }
 
-    public Set<DepartmentResponseDto> getDepartment() {
+    public DepartmentResponseDto getDepartment() {
         return department;
     }
 
-    public void setDepartment(Set<DepartmentResponseDto> department) {
+    public void setDepartment(DepartmentResponseDto department) {
         this.department = department;
     }
 }

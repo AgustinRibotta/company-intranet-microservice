@@ -1,6 +1,6 @@
 package com.company.intranet.rh_service.services;
 
-import com.company.intranet.rh_service.dtos.response.DepartmentRequestDto;
+import com.company.intranet.rh_service.dtos.request.DepartmentRequestDto;
 import com.company.intranet.rh_service.dtos.response.DepartmentResponseDto;
 
 import java.util.List;
