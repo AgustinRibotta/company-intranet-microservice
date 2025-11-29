@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+         // Handles any generic exception not caught by other handlers
         @ExceptionHandler(Exception.class)
         public final ResponseEntity<ErrorDetails> handleAllException(Exception ex, WebRequest request)
                         throws Exception {
@@ -32,6 +33,7 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
                 return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        // Handles exceptions when a user with a given ID is not found
         @ExceptionHandler(IdNotFoundException.class)
         public final ResponseEntity<ErrorDetails> handleUserNotFoudExeption(Exception ex, WebRequest request)
                         throws Exception {
@@ -41,6 +43,7 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
                 return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.NOT_FOUND);
         }
 
+        // Overrides default validation error handling for @Valid annotated method arguments
         @Override
         protected ResponseEntity<Object> handleMethodArgumentNotValid(
                         @SuppressWarnings("null") MethodArgumentNotValidException ex,
@@ -62,7 +65,7 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
 
                 return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
         }
-
+        // Handles errors when a method argument type is invalid (e.g., passing String instead of Integer)
         @ExceptionHandler(MethodArgumentTypeMismatchException.class)
         public final ResponseEntity<ErrorDetails> handleMethodArgumentTypeMismatch(
                         MethodArgumentTypeMismatchException ex, WebRequest request) {
@@ -75,6 +78,7 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
                 return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
         }
 
+        // Handles database integrity violations (e.g., duplicate keys, constraint violations)
         @SuppressWarnings("null")
         @ExceptionHandler(DataIntegrityViolationException.class)
         public ResponseEntity<ErrorDetails> handleDataIntegrityViolation(
@@ -102,6 +106,7 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
         }
 
+        // Handles authorization errors when a user lacks sufficient permissions
         @ExceptionHandler({ org.springframework.security.authorization.AuthorizationDeniedException.class })
         public ResponseEntity<ErrorDetails> handleAuthorizationDenied(AuthorizationDeniedException ex,
                         WebRequest request) {

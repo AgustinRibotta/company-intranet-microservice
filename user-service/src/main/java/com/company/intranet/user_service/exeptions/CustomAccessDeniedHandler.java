@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
+    // Handles AccessDeniedException thrown by Spring Security when a user tries to access
+    // a resource they don't have permission for. Returns a JSON response with error details.
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
             AccessDeniedException accessDeniedException) throws IOException, ServletException {
