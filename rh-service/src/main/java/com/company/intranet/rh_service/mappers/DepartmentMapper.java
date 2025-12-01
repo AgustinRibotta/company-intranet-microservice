@@ -4,6 +4,7 @@ import com.company.intranet.rh_service.dtos.request.DepartmentRequestDto;
 import com.company.intranet.rh_service.dtos.response.DepartmentResponseDto;
 import com.company.intranet.rh_service.entities.DepartmentEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
@@ -14,4 +15,6 @@ public interface DepartmentMapper {
     DepartmentResponseDto toDto (DepartmentEntity entity);
 
     DepartmentEntity toEntity (DepartmentRequestDto dto);
+
+    void updateEntityFromDto(DepartmentRequestDto dto, @MappingTarget DepartmentEntity entity);
 }

@@ -3,6 +3,7 @@ package com.company.intranet.rh_service.services.impl;
 import com.company.intranet.rh_service.dtos.request.DepartmentRequestDto;
 import com.company.intranet.rh_service.dtos.response.DepartmentResponseDto;
 import com.company.intranet.rh_service.entities.DepartmentEntity;
+import com.company.intranet.rh_service.exeptions.IdNotFoundException;
 import com.company.intranet.rh_service.mappers.DepartmentMapper;
 import com.company.intranet.rh_service.repositories.DepartmentRepository;
 import com.company.intranet.rh_service.services.DepartmentService;
@@ -34,21 +35,31 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentResponseDto findById(UUID id) {
-        return null;
+        DepartmentEntity department = this.repository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(id));
+        return this.mapper.toDto(department);
     }
 
     @Override
     public DepartmentResponseDto save(DepartmentRequestDto departmentDto) {
-        return null;
+        DepartmentEntity entity = this.mapper.toEntity(departmentDto);
+        return this.mapper.toDto(this.repository.save(entity));
     }
 
     @Override
     public DepartmentResponseDto update(DepartmentRequestDto departmentDto, UUID id) {
-        return null;
+        DepartmentEntity department = repository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(id));
+        mapper.updateEntityFromDto(departmentDto, department);
+        DepartmentEntity updated = repository.save(department);
+        return mapper.toDto(updated);
+
     }
 
     @Override
     public void delete(UUID id) {
-
+        DepartmentEntity department = repository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(id));
+        this.repository.delete(department);
     }
 }
