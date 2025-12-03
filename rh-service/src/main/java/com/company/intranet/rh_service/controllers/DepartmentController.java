@@ -48,7 +48,8 @@ public class DepartmentController {
     }
 
 //    @PreAuthorize("hasAuthority('DELETE_DP')")
-    public ResponseEntity<?> delete (@PathVariable UUID id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete (@PathVariable UUID id){
         this.service.delete(id);
         return ResponseEntity.noContent().build();
     }
