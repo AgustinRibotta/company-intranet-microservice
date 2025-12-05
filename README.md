@@ -13,6 +13,7 @@ It is designed for learning the fundamental building blocks of modern distribute
 ├── api-gateway                 # Routing, filters, entry point
 ├── auth-service                # Login, JWT generation
 ├── user-service                # User management, JWT validation
+├── rh-service                  # User profile management, Deparment managemebt (In  progres)
 ├── eureka-naming-server        # Service registry
 └── spring-cloud-config-service # Central config server
 ```
