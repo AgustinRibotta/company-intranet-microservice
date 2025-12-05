@@ -2,6 +2,7 @@ package com.company.intranet.rh_service.services.impl;
 
 import com.company.intranet.rh_service.dtos.request.ProfileRequestDto;
 import com.company.intranet.rh_service.dtos.response.ProfileResponseDto;
+import com.company.intranet.rh_service.dtos.response.ProfileSummaryResponseDto;
 import com.company.intranet.rh_service.entities.DepartmentEntity;
 import com.company.intranet.rh_service.entities.ProfileEntity;
 import com.company.intranet.rh_service.exeptions.IdNotFoundException;
@@ -29,9 +30,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<ProfileResponseDto> findAll() {
+    public List<ProfileSummaryResponseDto> findAll() {
         return this.repository.findAll().stream()
-                .map(mapper::toDto)
+                .map(mapper::toSummaryDto)
                 .collect(Collectors.toList());
     }
 

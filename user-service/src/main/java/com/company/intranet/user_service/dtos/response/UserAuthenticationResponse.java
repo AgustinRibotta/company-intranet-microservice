@@ -1,4 +1,4 @@
-package com.company.intranet.user_service.dtos;
+package com.company.intranet.user_service.dtos.response;
 
 import java.util.Set;
 import java.util.UUID;

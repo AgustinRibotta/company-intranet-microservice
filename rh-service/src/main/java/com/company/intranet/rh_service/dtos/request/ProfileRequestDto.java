@@ -3,7 +3,7 @@ package com.company.intranet.rh_service.dtos.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -11,7 +11,7 @@ import java.util.UUID;
 public class ProfileRequestDto {
 
     @Schema(description = "User Id of the Profile", required = true)
-    @NotBlank(message = "User Id is required")
+    @NotNull(message = "User Id is required")
     private UUID userId;
 
     @Schema(description = "Email of the user", example = "admin@admin.com", required = true)
@@ -27,15 +27,15 @@ public class ProfileRequestDto {
     private LocalDate birthday;
     private LocalDate startDate;
     private String position;
-    private Number salary;
+    private Integer salary;
 
-    @NotEmpty(message = "Department cannot be empty")
+    @NotNull(message = "Department cannot be empty")
     private UUID departmentId;
 
     public ProfileRequestDto() {
     }
 
-    public ProfileRequestDto(UUID userId, String email, String firstName, String lastName, LocalDate birthday, LocalDate startDate, String position, Number salary, UUID department) {
+    public ProfileRequestDto(UUID userId, String email, String firstName, String lastName, LocalDate birthday, LocalDate startDate, String position, Integer salary, UUID department) {
         this.userId = userId;
         this.email = email;
         this.firstName = firstName;
@@ -103,11 +103,11 @@ public class ProfileRequestDto {
         this.position = position;
     }
 
-    public Number getSalary() {
+    public Integer getSalary() {
         return salary;
     }
 
-    public void setSalary(Number salary) {
+    public void setSalary(Integer salary) {
         this.salary = salary;
     }
 

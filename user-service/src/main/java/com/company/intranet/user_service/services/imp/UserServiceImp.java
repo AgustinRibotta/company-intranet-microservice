@@ -1,26 +1,25 @@
 package com.company.intranet.user_service.services.imp;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import com.company.intranet.user_service.entities.PermissionEntity;
-import com.company.intranet.user_service.dtos.UserAuthenticationResponse;
-import com.company.intranet.user_service.dtos.UserAuthenticationRequest;
+import com.company.intranet.user_service.dtos.request.UserAuthenticationRequest;
 import com.company.intranet.user_service.dtos.request.UserCreateDto;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
+import com.company.intranet.user_service.dtos.response.UserAuthenticationResponse;
+import com.company.intranet.user_service.dtos.response.UserDto;
+import com.company.intranet.user_service.entities.PermissionEntity;
 import com.company.intranet.user_service.entities.RoleEntity;
 import com.company.intranet.user_service.entities.UserEntity;
-import com.company.intranet.user_service.dtos.response.UserDto;
 import com.company.intranet.user_service.exeptions.IdNotFoundException;
 import com.company.intranet.user_service.mappers.IUserMapper;
 import com.company.intranet.user_service.repositories.IRoleRepository;
 import com.company.intranet.user_service.repositories.IUserRepository;
 import com.company.intranet.user_service.services.IUserService;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements IUserService {

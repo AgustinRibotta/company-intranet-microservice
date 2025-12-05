@@ -3,8 +3,8 @@ package com.company.intranet.user_service.services;
 import java.util.List;
 import java.util.UUID;
 
-import com.company.intranet.user_service.dtos.UserAuthenticationResponse;
-import com.company.intranet.user_service.dtos.UserAuthenticationRequest;
+import com.company.intranet.user_service.dtos.response.UserAuthenticationResponse;
+import com.company.intranet.user_service.dtos.request.UserAuthenticationRequest;
 import com.company.intranet.user_service.dtos.request.UserCreateDto;
 import com.company.intranet.user_service.dtos.response.UserDto;
 
