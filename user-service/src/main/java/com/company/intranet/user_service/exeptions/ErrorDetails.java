@@ -1,8 +1,8 @@
 package com.company.intranet.user_service.exeptions;
 
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDateTime;
 
 public class ErrorDetails {
 
@@ -25,11 +25,11 @@ public class ErrorDetails {
         this.timestamp = timestamp;
     }
 
-    public String getmessage() {
+    public String getMessage() {
         return message;
     }
   
-    public void setmessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
