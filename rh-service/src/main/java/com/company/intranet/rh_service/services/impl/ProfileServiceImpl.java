@@ -56,7 +56,14 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfileResponseDto update(ProfileRequestDto dto, UUID id) {
         ProfileEntity entity = this.repository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException(id));
+
+        if (dto.getDepartmentId() != null) {
+            DepartmentEntity department = this.departmentRepository.findById(dto.getDepartmentId())
+                    .orElseThrow(() -> new IdNotFoundException(dto.getDepartmentId()));
+            entity.setDepartment(department);
+        }
         mapper.updateEntityFromDto(dto, entity);
+
         return this.mapper.toDto(this.repository.save(entity));
     }
 

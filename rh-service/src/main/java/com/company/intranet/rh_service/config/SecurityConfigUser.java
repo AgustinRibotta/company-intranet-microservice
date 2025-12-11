@@ -1,4 +1,4 @@
-package com.company.intranet.user_service.config;
+package com.company.intranet.rh_service.config;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
