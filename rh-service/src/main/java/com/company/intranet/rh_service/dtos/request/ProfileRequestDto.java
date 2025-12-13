@@ -29,7 +29,6 @@ public class ProfileRequestDto {
     private String position;
     private Integer salary;
 
-    @NotNull(message = " cannot be empty")
     private UUID departmentId;
 
     public ProfileRequestDto() {

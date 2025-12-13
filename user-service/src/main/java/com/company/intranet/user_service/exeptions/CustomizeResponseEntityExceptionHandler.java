@@ -118,4 +118,20 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
     }
+
+
+    @ExceptionHandler(ExternalServiceException.class)
+    public ResponseEntity<ErrorDetails> handleExternalService(
+            ExternalServiceException ex, WebRequest request) {
+
+        ErrorDetails error = new ErrorDetails(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_GATEWAY)
+                .body(error);
+    }
 }

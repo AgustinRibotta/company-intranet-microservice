@@ -41,16 +41,16 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentResponseDto save(DepartmentRequestDto departmentDto) {
-        DepartmentEntity entity = this.mapper.toEntity(departmentDto);
-        return this.mapper.toDto(this.repository.save(entity));
+    public DepartmentResponseDto save(DepartmentRequestDto request) {
+        DepartmentEntity department = this.mapper.toEntity(request);
+        return this.mapper.toDto(this.repository.save(department));
     }
 
     @Override
-    public DepartmentResponseDto update(DepartmentRequestDto departmentDto, UUID id) {
+    public DepartmentResponseDto update(DepartmentRequestDto request, UUID id) {
         DepartmentEntity department = repository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException(id));
-        mapper.updateEntityFromDto(departmentDto, department);
+        mapper.updateEntityFromDto(request, department);
         return mapper.toDto(repository.save(department));
 
     }

@@ -44,25 +44,32 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ProfileResponseDto save(ProfileRequestDto dto) {
-        ProfileEntity entity = this.mapper.toEntity(dto);
-        DepartmentEntity department = this.departmentRepository.findById(dto.getDepartmentId())
-                .orElseThrow(() -> new IdNotFoundException(dto.getDepartmentId()));
-        entity.setDepartment(department);
-        return this.mapper.toDto(this.repository.save(entity));
+    public ProfileResponseDto save(ProfileRequestDto request) {
+        ProfileEntity profile = this.mapper.toEntity(request);
+        if (request.getDepartmentId() != null) {
+            DepartmentEntity dept = departmentRepository
+                    .findById(request.getDepartmentId())
+                    .orElseThrow(() ->
+                            new IdNotFoundException(request.getDepartmentId()));
+
+            profile.setDepartment(dept);
+        } else {
+            profile.setDepartment(null);
+        }
+        return this.mapper.toDto(this.repository.save(profile));
     }
 
     @Override
-    public ProfileResponseDto update(ProfileRequestDto dto, UUID id) {
+    public ProfileResponseDto update(ProfileRequestDto request, UUID id) {
         ProfileEntity entity = this.repository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException(id));
 
-        if (dto.getDepartmentId() != null) {
-            DepartmentEntity department = this.departmentRepository.findById(dto.getDepartmentId())
-                    .orElseThrow(() -> new IdNotFoundException(dto.getDepartmentId()));
+        if (request.getDepartmentId() != null) {
+            DepartmentEntity department = this.departmentRepository.findById(request.getDepartmentId())
+                    .orElseThrow(() -> new IdNotFoundException(request.getDepartmentId()));
             entity.setDepartment(department);
         }
-        mapper.updateEntityFromDto(dto, entity);
+        mapper.updateEntityFromDto(request, entity);
 
         return this.mapper.toDto(this.repository.save(entity));
     }

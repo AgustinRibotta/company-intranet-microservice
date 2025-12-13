@@ -4,6 +4,7 @@ import com.company.intranet.rh_service.dtos.request.ProfileRequestDto;
 import com.company.intranet.rh_service.dtos.response.ProfileResponseDto;
 import com.company.intranet.rh_service.dtos.response.ProfileSummaryResponseDto;
 import com.company.intranet.rh_service.services.ProfileService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +38,7 @@ public class ProfileController {
     @PostMapping("/create")
     public ResponseEntity<?> save(@Validated @RequestBody ProfileRequestDto dto) {
         this.service.save(dto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PreAuthorize("hasAuthority('UPDATE_PROFILE')")

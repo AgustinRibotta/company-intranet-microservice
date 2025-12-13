@@ -1,18 +1,22 @@
 package com.company.intranet.user_service.services.imp;
 
+import com.company.intranet.user_service.dtos.request.RhRequest;
 import com.company.intranet.user_service.dtos.request.UserAuthenticationRequest;
 import com.company.intranet.user_service.dtos.request.UserCreateDto;
-import com.company.intranet.user_service.dtos.response.UserAuthenticationResponse;
+import com.company.intranet.user_service.dtos.response.AuthenticationResponse;
 import com.company.intranet.user_service.dtos.response.UserDto;
 import com.company.intranet.user_service.entities.PermissionEntity;
 import com.company.intranet.user_service.entities.RoleEntity;
 import com.company.intranet.user_service.entities.UserEntity;
+import com.company.intranet.user_service.exeptions.ExternalServiceException;
 import com.company.intranet.user_service.exeptions.IdNotFoundException;
 import com.company.intranet.user_service.mappers.IUserMapper;
+import com.company.intranet.user_service.proxy.RhServiceProxy;
 import com.company.intranet.user_service.repositories.IRoleRepository;
 import com.company.intranet.user_service.repositories.IUserRepository;
 import com.company.intranet.user_service.services.IUserService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +32,15 @@ public class UserServiceImp implements IUserService {
     private final PasswordEncoder passwordEncoder;
     private final IUserMapper userMapper;
     private final IRoleRepository roleRepository;
+    private final RhServiceProxy proxy;
 
     public UserServiceImp(IUserRepository userRepository, IUserMapper userMapper, PasswordEncoder passwordEncoder,
-            IRoleRepository roleRepository) {
+                          IRoleRepository roleRepository, RhServiceProxy proxy) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.roleRepository = roleRepository;
+        this.proxy = proxy;
     }
 
     @Override
@@ -71,8 +77,28 @@ public class UserServiceImp implements IUserService {
         newUser.setPassword(this.passwordEncoder.encode(userCreateDto.getPassword()));
 
         newUser = this.userRepository.save(newUser);
+
+        createRhProfile(newUser);
+
         return this.userMapper.userEntityToUserDto(newUser);
     }
+
+    private void createRhProfile(UserEntity user) {
+        RhRequest request = new RhRequest();
+        request.setUserId(user.getId());
+        request.setFirstName(user.getName());
+        request.setEmail(user.getEmail());
+
+        ResponseEntity<Void> response = proxy.create(request);
+
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new ExternalServiceException(
+                    "RH service responded with status: " + response.getStatusCode()
+            );
+        }
+
+    }
+
 
     @Override
     public UserDto update(UUID id, UserCreateDto userCreateDto) {
@@ -105,7 +131,7 @@ public class UserServiceImp implements IUserService {
 
 
     @Override
-    public UserAuthenticationResponse login(UserAuthenticationRequest request) {
+    public AuthenticationResponse login(UserAuthenticationRequest request) {
 
         UserEntity authUser = this.userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("User with email not found"));
@@ -123,7 +149,7 @@ public class UserServiceImp implements IUserService {
                 .map(PermissionEntity::getName)
                 .collect(Collectors.toSet());
 
-        return new UserAuthenticationResponse(
+        return new AuthenticationResponse(
                 authUser.getId(),
                 authUser.getEmail(),
                 rolesName,

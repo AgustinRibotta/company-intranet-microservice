@@ -28,7 +28,8 @@ public class RhServiceRoutes {
                                 "/rh-service/swagger-ui.html",
                                 "/rh-service/webjars/**",
                                 "/rh-service/actuator",
-                                "/rh-service/actuator/**")
+                                "/rh-service/actuator/**",
+                                "/rh-service/profiles/create")
                         .filters(f -> f.filter(internalTokenFilter))
                         .uri("lb://rh-service"))
                 .route("rh-secured", r -> r

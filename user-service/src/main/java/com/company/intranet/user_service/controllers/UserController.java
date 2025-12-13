@@ -3,7 +3,7 @@ package com.company.intranet.user_service.controllers;
 
 import com.company.intranet.user_service.dtos.request.UserAuthenticationRequest;
 import com.company.intranet.user_service.dtos.request.UserCreateDto;
-import com.company.intranet.user_service.dtos.response.UserAuthenticationResponse;
+import com.company.intranet.user_service.dtos.response.AuthenticationResponse;
 import com.company.intranet.user_service.dtos.response.UserDto;
 import com.company.intranet.user_service.services.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/valid")
-    public ResponseEntity<UserAuthenticationResponse> login (@Valid @RequestBody UserAuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> login (@Valid @RequestBody UserAuthenticationRequest request) {
         return ResponseEntity.ok().body(this.userService.login(request));
     }
 

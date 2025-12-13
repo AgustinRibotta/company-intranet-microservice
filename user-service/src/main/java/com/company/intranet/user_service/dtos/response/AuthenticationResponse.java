@@ -3,7 +3,7 @@ package com.company.intranet.user_service.dtos.response;
 import java.util.Set;
 import java.util.UUID;
 
-public class UserAuthenticationResponse {
+public class AuthenticationResponse {
 
     private UUID id;
 
@@ -13,10 +13,10 @@ public class UserAuthenticationResponse {
 
     private Set<String> permissionName;
 
-    public UserAuthenticationResponse() {
+    public AuthenticationResponse() {
     }
 
-    public UserAuthenticationResponse(UUID id, String email, Set<String> rolesName, Set<String> permissionName) {
+    public AuthenticationResponse(UUID id, String email, Set<String> rolesName, Set<String> permissionName) {
         this.id = id;
         this.email = email;
         this.rolesName = rolesName;

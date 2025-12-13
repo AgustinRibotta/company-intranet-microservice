@@ -32,8 +32,8 @@ public class ProfileEntity {
     private String position;
     private Integer salary;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "department_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "department_id", nullable = true)
     private DepartmentEntity department;
 
     public ProfileEntity() {

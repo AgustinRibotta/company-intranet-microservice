@@ -64,7 +64,8 @@ public class SecurityConfig {
                                 "/rh-service/swagger-ui.html",
                                 "/rh-service/webjars/**",
                                 "/rh-service/actuator",
-                                "/rh-service/actuator/**"
+                                "/rh-service/actuator/**",
+                                "/rh-service/profiles/create"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
