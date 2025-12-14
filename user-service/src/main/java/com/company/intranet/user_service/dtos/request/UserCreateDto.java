@@ -10,19 +10,21 @@ import java.util.Set;
 import java.util.UUID;
 
 public class UserCreateDto {
-    @Schema(description = "Name of the user", example = "admin", required = true)
+    @Schema(description = "Name of the user", example = "admin")
     @NotBlank(message = "Name is required")
     private String name;
 
-    @Schema(description = "Email of the user", example = "admin@admin.com", required = true)
+    @Schema(description = "Email of the user", example = "admin@admin.com")
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
+    @Schema(description = "Password of the user", example = "admin")
     @NotBlank(message = "Password is required")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Schema(description = "Roles of the user", example = "123e4567-e89b-12d3-a456-426614174000")
     @NotEmpty(message = "Roles cannot be empty")
     private Set<UUID> roles;
 

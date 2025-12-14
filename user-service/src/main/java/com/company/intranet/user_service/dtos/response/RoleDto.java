@@ -1,25 +1,16 @@
 package com.company.intranet.user_service.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.Set;
 import java.util.UUID;
 
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-
 public class RoleDto {
 
-    @Schema(description = "Unique identifier of the role", example = "550e8400-e29b-41d4-a716-446655440000")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private UUID id;
-
-    @Schema(description = "Name of the role", example = "ADMIN", required = true)
-    @NotBlank(message = "Name is required")
     private String name;
-
-    @Schema(description = "Permissions associated with the role")
     private Set<PermissionDto> permissions;
 
     public RoleDto() {

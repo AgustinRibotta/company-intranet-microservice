@@ -1,16 +1,16 @@
 package com.company.intranet.user_service.dtos.response;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 import java.util.Set;
 import java.util.UUID;
 
+@Hidden
 public class AuthenticationResponse {
 
     private UUID id;
-
     private String email;
-
     private Set<String> rolesName;
-
     private Set<String> permissionName;
 
     public AuthenticationResponse() {

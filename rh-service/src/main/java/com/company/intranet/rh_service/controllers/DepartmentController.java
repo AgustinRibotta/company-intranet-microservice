@@ -3,6 +3,7 @@ package com.company.intranet.rh_service.controllers;
 import com.company.intranet.rh_service.dtos.request.DepartmentRequestDto;
 import com.company.intranet.rh_service.dtos.response.DepartmentResponseDto;
 import com.company.intranet.rh_service.services.DepartmentService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -22,11 +23,16 @@ public class DepartmentController {
         this.service = service;
     }
 
+    @Operation(
+            summary = "Retrieve all Department",
+            description = "Accessible only to user with thr READ_DP permission "
+    )
     @PreAuthorize("hasAuthority('READ_DP')")
     @GetMapping
     public ResponseEntity<List<DepartmentResponseDto>> findAll(){
         return ResponseEntity.ok().body(this.service.findAll());
     }
+
 
     @PreAuthorize("hasAuthority('READ_DP')")
     @GetMapping("/department/{id}")

@@ -86,9 +86,7 @@ The service uses **strict RBAC (Role-Based Access Control)**.
 
 ### 3️⃣ Permission Management
 
-* Define all permissions available in the system
 * Assign permissions to roles
-* Maintain permission hierarchy (if needed)
 
 ---
 
@@ -97,13 +95,13 @@ The service uses **strict RBAC (Role-Based Access Control)**.
 Swagger UI:
 
 ```
-http://localhost:<port>/swagger-ui.html
+http://localhost:<port>/user-service/swagger-ui.html
 ```
 
 OpenAPI JSON:
 
 ```
-http://localhost:<port>/v3/api-docs
+http://localhost:<port>/user-service/v3/api-docs
 ```
 
 ---
@@ -114,7 +112,6 @@ The **User Service** is the **central security authority** of the system, provid
 
 * User CRUD
 * Role creation & storage
-* Permission registry
 * Role-to-permission mapping
 * User-to-role assignment
 * Full RBAC for all endpoints

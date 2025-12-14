@@ -8,10 +8,11 @@ import java.util.UUID;
 
 public class RoleCreateDto {
 
-    @Schema(description = "Name of the role", example = "ADMIN", required = true)
+    @Schema(description = "Name of the role", example = "ADMIN")
     @NotBlank(message = "Name is required")
     private String name;
 
+    @Schema(description = "Permissions of the role", example = "123e4567-e89b-12d3-a456-426614174000")
     private Set<UUID> permissions;
 
     public RoleCreateDto() {

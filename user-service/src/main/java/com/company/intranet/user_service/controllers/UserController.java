@@ -6,6 +6,7 @@ import com.company.intranet.user_service.dtos.request.UserCreateDto;
 import com.company.intranet.user_service.dtos.response.AuthenticationResponse;
 import com.company.intranet.user_service.dtos.response.UserDto;
 import com.company.intranet.user_service.services.IUserService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -17,10 +18,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-
+@Tag(name = "Users", description = "Users management operations")
 @RestController
 @RequestMapping(path = "/user-service/users")
-@Tag(name = "Users", description = "Users management operations")
 public class UserController {
 
     final IUserService userService;
@@ -29,55 +29,57 @@ public class UserController {
         this.userService = userService;
     }
 
+//    Route responsible for receiving the user and verifying if it actually exists
+    @Hidden
     @PostMapping("/valid")
     public ResponseEntity<AuthenticationResponse> login (@Valid @RequestBody UserAuthenticationRequest request) {
         return ResponseEntity.ok().body(this.userService.login(request));
     }
 
-    @PreAuthorize("hasAuthority('READ_USERS')")
     @Operation(
-            summary = "Retrive all User",
-            description = "Accessible only to users with the ADMIN role"
+            summary = "Retrieve all User",
+            description = "Accessible only to users with the READ_USERS permission"
     )
+    @PreAuthorize("hasAuthority('READ_USERS')")
     @GetMapping()
-    public ResponseEntity<List<UserDto>> retriveAllUsers() {
+    public ResponseEntity<List<UserDto>> retrieveAllUsers() {
         return ResponseEntity.ok().body(this.userService.findAll());
     }
 
-    @PreAuthorize("@securityConfigUser.isUser(#id) or hasAuthority('READ_USERS')")
     @Operation(summary = "Retrieve user by ID",
-            description = "Accessible to ADMIN users or the user themselves"
+            description = "Accessible only to users with the READ_USERS permission or the user themselves"
     )
+    @PreAuthorize("@securityConfigUser.isUser(#id) or hasAuthority('READ_USERS')")
     @GetMapping(path = "/user/{id}")
-    public ResponseEntity<UserDto> retrivUserById(@PathVariable UUID id) {
+    public ResponseEntity<UserDto> retrieveUserById(@PathVariable UUID id) {
         return ResponseEntity.ok().body(this.userService.findById(id));
     }
 
+    @Operation(summary = "Create a new User",
+            description = "Accessible only to users with the CREATE_USERS permission"
+    )
     @PreAuthorize("hasAuthority('CREATE_USERS')")
     @PostMapping()
-    @Operation(summary = "Create a new User",
-            description = "Accessible only to users with the ADMIN role"
-    )
     public ResponseEntity<UserDto> saveUser(@Valid @RequestBody UserCreateDto userCreateDto) {
         UserDto newUser = this.userService.save(userCreateDto);
         URI location = URI.create("/user-service/users/" + newUser.getId());
         return ResponseEntity.created(location).body(newUser);
     }
 
+    @Operation(summary = "Update an existing User",
+            description = "Accessible only to users with the WRITE_USERS permission"
+    )
     @PreAuthorize("hasAuthority('WRITE_USERS')")
     @PutMapping(path = "/user/{id}")
-    @Operation(summary = "Update an existing User",
-            description = "Accessible only to users with the ADMIN role"
-    )
     public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @Valid @RequestBody UserCreateDto userCreateDto) {
         return ResponseEntity.ok(this.userService.update(id, userCreateDto));
     }
 
+    @Operation(summary = "Delete a User",
+            description = "Accessible only to users with the DELETE_USERS permission"
+    )
     @PreAuthorize("hasAuthority('DELETE_USERS')")
     @DeleteMapping(path = "/user/{id}")
-    @Operation(summary = "Delete a User",
-            description = "Accessible only to users with the ADMIN role"
-    )
     public ResponseEntity<?> delteUser(@PathVariable UUID id) {
         this.userService.delete(id);
         return ResponseEntity.noContent().build();

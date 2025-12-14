@@ -1,12 +1,12 @@
 package com.company.intranet.user_service.dtos.request;
 
-import jakarta.validation.constraints.Email;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.NotBlank;
 
+@Hidden
 public class UserAuthenticationRequest {
 
     @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
     private String email;
 
     @NotBlank(message = "Password is required")

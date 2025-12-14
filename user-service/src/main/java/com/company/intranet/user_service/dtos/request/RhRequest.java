@@ -1,7 +1,10 @@
 package com.company.intranet.user_service.dtos.request;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 import java.util.UUID;
 
+@Hidden
 public class RhRequest {
 
     private UUID userId;
