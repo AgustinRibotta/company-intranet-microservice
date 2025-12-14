@@ -1,11 +1,11 @@
 package com.company.intranet.user_service.dtos.response;
 
-import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Set;
 import java.util.UUID;
 
-@Hidden
+@Schema(hidden = true)
 public class AuthenticationResponse {
 
     private UUID id;

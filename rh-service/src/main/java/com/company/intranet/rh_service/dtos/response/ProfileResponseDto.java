@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class ProfileResponseDto {
+
     private UUID userId;
     private String email;
     private String firstName;

@@ -36,6 +36,18 @@ public class UserController {
         return ResponseEntity.ok().body(this.userService.login(request));
     }
 
+//    Route responsible for verifying if a user actually exists.
+    @Hidden
+    @GetMapping("/auth/{id}/exists")
+    public ResponseEntity<Void> checkUserExists(@PathVariable UUID id) {
+        boolean exists = this.userService.existsById(id);
+        if (exists) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @Operation(
             summary = "Retrieve all User",
             description = "Accessible only to users with the READ_USERS permission"
@@ -80,7 +92,7 @@ public class UserController {
     )
     @PreAuthorize("hasAuthority('DELETE_USERS')")
     @DeleteMapping(path = "/user/{id}")
-    public ResponseEntity<?> delteUser(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
         this.userService.delete(id);
         return ResponseEntity.noContent().build();
     }

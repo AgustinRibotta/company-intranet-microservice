@@ -29,7 +29,8 @@ public class UserServiceRoutes {
                                 "/user-service/webjars/**",
                                 "/user-service/actuator",
                                 "/user-service/actuator/**",
-                                "/user-service/users/valid")
+                                "/user-service/users/valid",
+                                "/user-service/users/auth/**")
                         .filters(f -> f.filter(internalTokenFilter))
                         .uri("lb://user-service"))
                 .route("user-secured", r -> r

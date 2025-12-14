@@ -15,5 +15,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface UserServiceProxy {
 
     @PostMapping("/user-service/users/valid")
-    public ResponseEntity<UserAuthenticationResponse> login(@RequestBody AuthenticationRequest request);
+    public ResponseEntity<UserAuthenticationResponse> auth(@RequestBody AuthenticationRequest request);
 }

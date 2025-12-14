@@ -3,7 +3,7 @@ package com.company.intranet.rh_service.dtos.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
-
+@Schema(description = "Departments information for create new role or update role")
 public class DepartmentRequestDto {
 
 

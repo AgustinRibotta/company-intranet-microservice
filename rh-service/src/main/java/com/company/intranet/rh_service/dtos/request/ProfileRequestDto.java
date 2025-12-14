@@ -1,5 +1,6 @@
 package com.company.intranet.rh_service.dtos.request;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,18 +9,19 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Schema(description = "Profile information for create new role or update user profile")
 public class ProfileRequestDto {
 
-    @Schema(description = "User Id of the Profile", required = true)
+    @Hidden
     @NotNull(message = "User Id is required")
     private UUID userId;
 
-    @Schema(description = "Email of the user", example = "admin@admin.com", required = true)
+    @Hidden
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
-    @Schema(description = "Name of the user", example = "admin", required = true)
+    @Hidden
     @NotBlank(message = "Name is required")
     private String firstName;
 

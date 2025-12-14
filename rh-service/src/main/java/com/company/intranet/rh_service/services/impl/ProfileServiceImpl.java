@@ -7,9 +7,11 @@ import com.company.intranet.rh_service.entities.DepartmentEntity;
 import com.company.intranet.rh_service.entities.ProfileEntity;
 import com.company.intranet.rh_service.exeptions.IdNotFoundException;
 import com.company.intranet.rh_service.mappers.ProfileMapper;
+import com.company.intranet.rh_service.proxy.UserServiceProxy;
 import com.company.intranet.rh_service.repositories.DepartmentRepository;
 import com.company.intranet.rh_service.repositories.ProfileRepository;
 import com.company.intranet.rh_service.services.ProfileService;
+import feign.FeignException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,11 +24,13 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository repository;
     private final DepartmentRepository departmentRepository;
     private final ProfileMapper mapper;
+    private final UserServiceProxy proxy;
 
-    public ProfileServiceImpl(ProfileRepository repository, DepartmentRepository departmentRepository, ProfileMapper mapper) {
+    public ProfileServiceImpl(ProfileRepository repository, DepartmentRepository departmentRepository, ProfileMapper mapper, UserServiceProxy proxy) {
         this.repository = repository;
         this.departmentRepository = departmentRepository;
         this.mapper = mapper;
+        this.proxy = proxy;
     }
 
     @Override
@@ -61,15 +65,22 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileResponseDto update(ProfileRequestDto request, UUID id) {
+
         ProfileEntity entity = this.repository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException(id));
+
+        try {
+            this.proxy.auth(entity.getUserId());
+        } catch (FeignException.NotFound e) {
+            throw new IdNotFoundException(entity.getUserId());
+        }
 
         if (request.getDepartmentId() != null) {
             DepartmentEntity department = this.departmentRepository.findById(request.getDepartmentId())
                     .orElseThrow(() -> new IdNotFoundException(request.getDepartmentId()));
             entity.setDepartment(department);
         }
-        mapper.updateEntityFromDto(request, entity);
+        this.mapper.updateEntityFromDto(request, entity);
 
         return this.mapper.toDto(this.repository.save(entity));
     }

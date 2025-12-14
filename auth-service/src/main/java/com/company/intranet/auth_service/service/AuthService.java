@@ -24,7 +24,7 @@ public class AuthService {
     public AuthenticationResponse login(AuthenticationRequest request) {
 
         try {
-            UserAuthenticationResponse user = userServiceProxy.login(request).getBody();
+            UserAuthenticationResponse user = userServiceProxy.auth(request).getBody();
 
             if (user == null) {
                 throw new ErrorDetails(

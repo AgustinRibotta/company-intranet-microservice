@@ -1,10 +1,12 @@
 package com.company.intranet.user_service.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;
 
+@Schema(hidden = true)
 public class PermissionDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

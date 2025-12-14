@@ -1,12 +1,14 @@
-package com.company.intranet.user_service.config;
+package com.company.intranet.rh_service.config;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+@Configuration
 @Profile("prod")
-public class RHServiceFeignConfig implements RequestInterceptor {
+public class UserServiceFeignConfig implements RequestInterceptor {
 
     @Value("${internal.token}")
     private String INTERNAL_TOKEN;

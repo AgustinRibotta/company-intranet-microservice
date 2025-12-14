@@ -1,16 +1,15 @@
 package com.company.intranet.rh_service.dtos.response;
 
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 import java.util.UUID;
 
 public class ProfileSummaryResponseDto {
 
     private UUID id;
-
     private String email;
-
     private String firstName;
-
     private String lastName;
     private String position;
 

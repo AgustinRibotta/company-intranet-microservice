@@ -99,7 +99,6 @@ public class UserServiceImp implements IUserService {
 
     }
 
-
     @Override
     public UserDto update(UUID id, UserCreateDto userCreateDto) {
 
@@ -122,6 +121,11 @@ public class UserServiceImp implements IUserService {
         userEntity = this.userRepository.save(userEntity);
 
         return this.userMapper.userEntityToUserDto(userEntity);
+    }
+
+    @Override
+    public boolean existsById (UUID id) {
+        return this.userRepository.existsById(id);
     }
 
     @Override

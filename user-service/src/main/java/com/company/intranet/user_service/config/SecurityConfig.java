@@ -1,14 +1,12 @@
 package com.company.intranet.user_service.config;
 
-import java.util.Collections;
-import java.util.stream.Collectors;
-
-import javax.crypto.spec.SecretKeySpec;
-
+import com.company.intranet.user_service.exeptions.CustomAccessDeniedHandler;
+import com.company.intranet.user_service.exeptions.CustomAuthenticationEntryPoint;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,11 +18,13 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.company.intranet.user_service.exeptions.CustomAccessDeniedHandler;
-import com.company.intranet.user_service.exeptions.CustomAuthenticationEntryPoint;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
+@Profile("prod")
 public class SecurityConfig {
 
     private final CustomAccessDeniedHandler accessDeniedHandler;
@@ -51,7 +51,8 @@ public class SecurityConfig {
                                 "/user-service/webjars/**",
                                 "/user-service/users/valid",
                                 "/user-service/actuator",
-                                "/user-service/actuator/**"
+                                "/user-service/actuator/**",
+                                "/user-service/users/auth/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

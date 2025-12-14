@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.Set;
 import java.util.UUID;
 
+@Schema(description = "Role information for create new role or update role")
 public class RoleCreateDto {
 
     @Schema(description = "Name of the role", example = "ADMIN")

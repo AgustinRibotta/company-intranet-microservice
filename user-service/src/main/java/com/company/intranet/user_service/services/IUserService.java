@@ -16,5 +16,6 @@ public interface IUserService  {
     UserDto update (UUID id, UserCreateDto userDto);
     void delete (UUID id);
     AuthenticationResponse login (UserAuthenticationRequest request);
+    boolean existsById (UUID id);
 
 }

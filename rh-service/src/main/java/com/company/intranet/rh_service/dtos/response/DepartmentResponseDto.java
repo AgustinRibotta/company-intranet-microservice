@@ -1,15 +1,11 @@
 package com.company.intranet.rh_service.dtos.response;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.UUID;
 
 public class DepartmentResponseDto {
 
-    @Schema(description = "Unique identifier of the department",
-            example = "550e8400-e29b-41d4-a716-446655440000")
     private UUID id;
-
     private String name;
 
     public DepartmentResponseDto() {

@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.Set;
 import java.util.UUID;
 
+@Schema(description = "User information for create or update ")
 public class UserCreateDto {
     @Schema(description = "Name of the user", example = "admin")
     @NotBlank(message = "Name is required")
