@@ -112,6 +112,8 @@ Microservices Practice Project for Spring
 
 • Spring Boot
 
+• Spring Security
+
 • Spring Cloud
 
 • JWT
