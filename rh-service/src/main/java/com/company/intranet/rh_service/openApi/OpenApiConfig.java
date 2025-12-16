@@ -22,7 +22,7 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("User Service API").version("1.0"))
+                .info(new Info().title("Rh Service API").version("1.0"))
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes("basicAuth",
                                 new SecurityScheme()

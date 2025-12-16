@@ -1,9 +1,14 @@
 package com.company.intranet.auth_service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Authentication information for login ")
 public class AuthenticationRequest {
 
+    @Schema(description = "Email of the login", example = "admin@admin.com")
     private String email;
 
+    @Schema(description = "Password of the login", example = "admin")
     private String password;
 
     public AuthenticationRequest() {
