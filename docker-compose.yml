@@ -1,0 +1,62 @@
+version: "3.9"
+
+networks:
+  microservices:
+    driver: bridge
+
+services:
+
+  config-service:
+    build: ./spring-cloud-config-service
+    volumes:
+      - ./ssh/id_ed25519:/root/.ssh/id_ed25519:ro
+    environment:
+      - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_ed25519 -o StrictHostKeyChecking=no
+    networks:
+      - microservices
+
+  eureka-service:
+    build: ./eureka-neming-server
+    networks:
+      - microservices
+    depends_on:
+      - config-service
+
+  api-gateway-service:
+    build: ./api-gateway
+    networks:
+      - microservices
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config-service
+
+  user-service:
+    build: ./user-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - microservices
+    depends_on:
+      - config-service
+
+  rh-service:
+    build: ./rh-service
+    networks:
+      - microservices
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - config-service
+
+  auth-service:
+    build: ./auth-service
+    networks:
+      - microservices
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - config-service
+
+
+
