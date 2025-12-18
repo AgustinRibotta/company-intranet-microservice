@@ -9,20 +9,29 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Configuration
 public class OpenApiConfig {
 
+    @Value("${USER_SERVICE_URL}")
+    private String userServiceUrl;
+
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info().title("User Service API").version("1.0"))
+                .servers(List.of(
+                        new Server().url(userServiceUrl)
+                ))
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes("basicAuth",
                                 new SecurityScheme()
@@ -35,7 +44,6 @@ public class OpenApiConfig {
                                         .bearerFormat("JWT")))
                 .addSecurityItem(new SecurityRequirement().addList("basicAuth"));
     }
-
     @Bean
     public OpenApiCustomizer globalResponses() {
         return openApi -> openApi.getPaths().values().forEach(pathItem ->

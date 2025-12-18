@@ -22,6 +22,12 @@ public class UserServiceRoutes {
     @Bean
     public RouteLocator userRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
+                .route("user-documentation", r -> r
+                        .path("/user-service/swagger-ui/**",
+                                "/user-service/v3/api-docs/**",
+                                "/user-service/swagger-ui.html",
+                                "/user-service/webjars/**")
+                        .uri("lb://user-service"))
                 .route("user-internal", r -> r
                         .path("/user-service/swagger-ui/**",
                                 "/user-service/v3/api-docs/**",

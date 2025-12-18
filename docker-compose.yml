@@ -9,54 +9,87 @@ services:
   config-service:
     build: ./spring-cloud-config-service
     volumes:
-      - ./ssh/id_ed25519:/root/.ssh/id_ed25519:ro
+      - ~/.ssh/docker:/root/.ssh/id_rsa:ro
+      - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
     environment:
-      - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_ed25519 -o StrictHostKeyChecking=no
+      - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_rsa -o UserKnownHostsFile=/root/.ssh/known_hosts
     networks:
       - microservices
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 5s
+      timeout: 2s
+      retries: 12
 
-  eureka-service:
+  eureka-neming-server:
     build: ./eureka-neming-server
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+    depends_on:
+      config-service:
+        condition: service_healthy
     networks:
       - microservices
-    depends_on:
-      - config-service
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 5s
+      timeout: 2s
+      retries: 12
 
   api-gateway-service:
     build: ./api-gateway
-    networks:
-      - microservices
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_CLIENT=http://eureka-neming-server:8761/eureka
     ports:
       - "8080:8080"
     depends_on:
-      - config-service
+      eureka-neming-server:
+        condition: service_healthy
+    networks:
+      - microservices
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 5s
+      timeout: 2s
+      retries: 12
 
   user-service:
     build: ./user-service
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_CLIENT=http://eureka-neming-server:8761/eureka
+      - USER_SERVICE_URL=http://localhost:8080
+    depends_on:
+      api-gateway-service:
+        condition: service_healthy
     networks:
       - microservices
-    depends_on:
-      - config-service
 
   rh-service:
     build: ./rh-service
-    networks:
-      - microservices
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_CLIENT=http://eureka-neming-server:8761/eureka
     depends_on:
-      - config-service
+      api-gateway-service:
+        condition: service_healthy
+    networks:
+      - microservices
 
   auth-service:
     build: ./auth-service
-    networks:
-      - microservices
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_CLIENT=http://eureka-neming-server:8761/eureka
     depends_on:
-      - config-service
+      api-gateway-service:
+        condition: service_healthy
+    networks:
+      - microservices
 
 
 
