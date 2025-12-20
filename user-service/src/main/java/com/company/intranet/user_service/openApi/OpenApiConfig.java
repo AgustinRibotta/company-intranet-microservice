@@ -14,12 +14,14 @@ import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Configuration
+@Profile("dev")
 public class OpenApiConfig {
 
     @Value("${USER_SERVICE_URL}")
