@@ -8,6 +8,8 @@ services:
 
   config-service:
     build: ./spring-cloud-config-service
+    image: config-service:latest
+    container_name: config-service-container
     volumes:
       - ~/.ssh/docker:/root/.ssh/id_rsa:ro
       - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
@@ -23,8 +25,10 @@ services:
 
   eureka-neming-server:
     build: ./eureka-neming-server
+    image: eureka-neming-server:latest
+    container_name: eureka-neming-server-container
     environment:
-      - CONFIG_SERVER_URL=http://config-service:8888
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
     depends_on:
       config-service:
         condition: service_healthy
@@ -38,9 +42,12 @@ services:
 
   api-gateway-service:
     build: ./api-gateway
+    image: api-gateway-service:latest
+    container_name: api-gateway-service-container
     environment:
-      - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_CLIENT=http://eureka-neming-server:8761/eureka
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_CLIENT=${EUREKA_CLIENT}
     ports:
       - "8080:8080"
     depends_on:
@@ -56,11 +63,13 @@ services:
 
   user-service:
     build: ./user-service
+    image: user-service:latest
+    container_name: user-service-container
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_CLIENT=http://eureka-neming-server:8761/eureka
-      - USER_SERVICE_URL=http://localhost:8080
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_CLIENT=${EUREKA_CLIENT}
+      - USER_SERVICE_URL=${API_GATEWAY_SERVICE_URL}
     depends_on:
       api-gateway-service:
         condition: service_healthy
@@ -69,10 +78,12 @@ services:
 
   rh-service:
     build: ./rh-service
+    image: rh-service:latest
+    container_name: rh-service-container
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_CLIENT=http://eureka-neming-server:8761/eureka
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_CLIENT=${EUREKA_CLIENT}
     depends_on:
       api-gateway-service:
         condition: service_healthy
@@ -81,10 +92,12 @@ services:
 
   auth-service:
     build: ./auth-service
+    image: auth-service:latest
+    container_name: auth-service-container
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_CLIENT=http://eureka-neming-server:8761/eureka
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_CLIENT=${EUREKA_CLIENT}
     depends_on:
       api-gateway-service:
         condition: service_healthy
