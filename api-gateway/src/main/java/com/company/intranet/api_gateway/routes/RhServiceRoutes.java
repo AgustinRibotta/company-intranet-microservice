@@ -22,21 +22,28 @@ public class RhServiceRoutes {
     @Bean
     public RouteLocator rhRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("rh-internal", r -> r
+
+                .route("rh-docs", r -> r
                         .path("/rh-service/swagger-ui/**",
                                 "/rh-service/v3/api-docs/**",
                                 "/rh-service/swagger-ui.html",
                                 "/rh-service/webjars/**",
-                                "/rh-service/actuator",
+                                "/rh-service/actuator")
+                        .uri("lb://rh-service"))
+
+                .route("rh-internal", r -> r
+                        .path("/rh-service/actuator",
                                 "/rh-service/actuator/**",
                                 "/rh-service/profiles/create")
                         .filters(f -> f.filter(internalTokenFilter))
                         .uri("lb://rh-service"))
+
                 .route("rh-secured", r -> r
                         .path("/rh-service/**")
                         .filters(f -> f.filter(jwtValidationFilter)
                                 .removeRequestHeader("Host"))
                         .uri("lb://rh-service"))
+
                 .build();
     }
 }

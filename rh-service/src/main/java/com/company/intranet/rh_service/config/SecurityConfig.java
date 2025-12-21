@@ -1,23 +1,5 @@
 package com.company.intranet.rh_service.config;
 
-//@Configuration
-//public class SecurityConfig {
-//
-//    @Value("${jwt.secret}")
-//    private String secretKey;
-//
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-//                .formLogin(AbstractHttpConfigurer::disable)
-//                .httpBasic(AbstractHttpConfigurer::disable);
-//
-//        return http.build();
-//    }
-//}
-
 import com.company.intranet.rh_service.exeptions.CustomAccessDeniedHandler;
 import com.company.intranet.rh_service.exeptions.CustomAuthenticationEntryPoint;
 import io.jsonwebtoken.SignatureAlgorithm;

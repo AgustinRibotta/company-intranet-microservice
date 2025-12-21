@@ -24,16 +24,11 @@ import java.util.List;
 @Profile("dev")
 public class OpenApiConfig {
 
-    @Value("${USER_SERVICE_URL}")
-    private String userServiceUrl;
-
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info().title("User Service API").version("1.0"))
-                .servers(List.of(
-                        new Server().url(userServiceUrl)
-                ))
+
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes("basicAuth",
                                 new SecurityScheme()

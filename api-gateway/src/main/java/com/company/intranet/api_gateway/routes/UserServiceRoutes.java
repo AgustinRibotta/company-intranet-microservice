@@ -22,28 +22,28 @@ public class UserServiceRoutes {
     @Bean
     public RouteLocator userRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("user-documentation", r -> r
+
+                .route("user-docs", r -> r
                         .path("/user-service/swagger-ui/**",
                                 "/user-service/v3/api-docs/**",
                                 "/user-service/swagger-ui.html",
                                 "/user-service/webjars/**")
                         .uri("lb://user-service"))
+
                 .route("user-internal", r -> r
-                        .path("/user-service/swagger-ui/**",
-                                "/user-service/v3/api-docs/**",
-                                "/user-service/swagger-ui.html",
-                                "/user-service/webjars/**",
+                        .path("/user-service/users/valid",
                                 "/user-service/actuator",
                                 "/user-service/actuator/**",
-                                "/user-service/users/valid",
                                 "/user-service/users/auth/**")
                         .filters(f -> f.filter(internalTokenFilter))
                         .uri("lb://user-service"))
+
                 .route("user-secured", r -> r
                         .path("/user-service/**")
                         .filters(f -> f.filter(jwtValidationFilter)
                                 .removeRequestHeader("Host"))
                         .uri("lb://user-service"))
+
                 .build();
     }
 }
