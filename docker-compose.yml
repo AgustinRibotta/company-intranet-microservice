@@ -6,6 +6,42 @@ networks:
 
 services:
 
+  db-postgres:
+    image: postgres:15
+    container_name: mi-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - microservices
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 1
+
+  db-mysql:
+    image: mysql:8.4
+    container_name: mi-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DB: ${MYSQL_DATABASE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -uroot -prootpass"]
+      interval: 10s
+      timeout: 5s
+      retries: 1
+
+
   config-service:
     build: ./spring-cloud-config-service
     image: config-service:latest
@@ -15,13 +51,16 @@ services:
       - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
     environment:
       - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_rsa -o UserKnownHostsFile=/root/.ssh/known_hosts
+      - CONFIG_SERVER_PORT=${CONFIG_SERVER_PORT}
+      - CONFIG_SERVER_GIT=${CONFIG_SERVER_GIT}
     networks:
       - microservices
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
-      interval: 5s
-      timeout: 2s
-      retries: 12
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 1
+
 
   eureka-neming-server:
     build: ./eureka-neming-server
@@ -29,16 +68,17 @@ services:
     container_name: eureka-neming-server-container
     environment:
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_CLIENT_PORT=${EUREKA_CLIENT_PORT}
     depends_on:
       config-service:
         condition: service_healthy
     networks:
       - microservices
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
-      interval: 5s
-      timeout: 2s
-      retries: 12
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 1
 
   api-gateway-service:
     build: ./api-gateway
@@ -47,19 +87,24 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - EUREKA_CLIENT=${EUREKA_CLIENT}
+      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+      - TOKEN=${TOKEN}
+      - NAME=${NAME}
+      - SECRET=${SECRET}
+      - API_GATEWAY_PORT=${API_GATEWAY_PORT}
     ports:
-      - "8080:8080"
+      - ${API_GATEWAY_PORT_EXP}
     depends_on:
       eureka-neming-server:
         condition: service_healthy
     networks:
       - microservices
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
-      interval: 5s
-      timeout: 2s
-      retries: 12
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 1
+
 
   user-service:
     build: ./user-service
@@ -68,10 +113,18 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - EUREKA_CLIENT=${EUREKA_CLIENT}
-      - USER_SERVICE_URL=${API_GATEWAY_SERVICE_URL}
+      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_URL=${POSTGRES_URL}
+      - TOKEN=${TOKEN}
+      - NAME=${NAME}
+      - SECRET=${SECRET}
+      - USER_SERVICE_POR=${USER_SERVICE_POR}
     depends_on:
       api-gateway-service:
+        condition: service_healthy
+      db-postgres:
         condition: service_healthy
     networks:
       - microservices
@@ -83,9 +136,18 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - EUREKA_CLIENT=${EUREKA_CLIENT}
+      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_URL=${MYSQL_URL}
+      - TOKEN=${TOKEN}
+      - NAME=${NAME}
+      - SECRET=${SECRET}
+      - RH_SERVICE_PORT=${RH_SERVICE_PORT}
     depends_on:
       api-gateway-service:
+        condition: service_healthy
+      db-mysql:
         condition: service_healthy
     networks:
       - microservices
@@ -97,12 +159,17 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - EUREKA_CLIENT=${EUREKA_CLIENT}
+      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+      - TOKEN=${TOKEN}
+      - NAME=${NAME}
+      - SECRET=${SECRET}
+      - AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}
     depends_on:
       api-gateway-service:
         condition: service_healthy
     networks:
       - microservices
 
-
-
+volumes:
+  postgres_data:
+  mysql_data:
