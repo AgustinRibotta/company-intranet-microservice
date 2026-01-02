@@ -1,0 +1,19 @@
+services:
+  auth-service:
+    build: .
+    image: auth-service:latest
+    container_name: auth-service-container
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+      - TOKEN=${TOKEN}
+      - NAME=${NAME}
+      - SECRET=${SECRET}
+      - AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    external: true

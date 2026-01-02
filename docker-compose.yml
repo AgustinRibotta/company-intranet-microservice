@@ -1,8 +1,4 @@
-version: "3.9"
 
-networks:
-  microservices:
-    driver: bridge
 
 services:
 
@@ -42,133 +38,137 @@ services:
       retries: 1
 
 
-  config-service:
-    build: ./spring-cloud-config-service
-    image: config-service:latest
-    container_name: config-service-container
-    volumes:
-      - ~/.ssh/docker:/root/.ssh/id_rsa:ro
-      - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
-    environment:
-      - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_rsa -o UserKnownHostsFile=/root/.ssh/known_hosts
-      - CONFIG_SERVER_PORT=${CONFIG_SERVER_PORT}
-      - CONFIG_SERVER_GIT=${CONFIG_SERVER_GIT}
-    networks:
-      - microservices
-    healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
-      interval: 10s
-      timeout: 5s
-      retries: 1
+#  config-service:
+#    build: ./spring-cloud-config-service
+#    image: config-service:latest
+#    container_name: config-service-container
+#    volumes:
+#      - ~/.ssh/docker:/root/.ssh/id_rsa:ro
+#      - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
+#    environment:
+#      - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_rsa -o UserKnownHostsFile=/root/.ssh/known_hosts
+#      - CONFIG_SERVER_PORT=${CONFIG_SERVER_PORT}
+#      - CONFIG_SERVER_GIT=${CONFIG_SERVER_GIT}
+#    networks:
+#      - microservices
+#    healthcheck:
+#      test: ["CMD-SHELL", "exit 0"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 1
 
 
-  eureka-neming-server:
-    build: ./eureka-neming-server
-    image: eureka-neming-server:latest
-    container_name: eureka-neming-server-container
-    environment:
-      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - EUREKA_CLIENT_PORT=${EUREKA_CLIENT_PORT}
-    depends_on:
-      config-service:
-        condition: service_healthy
-    networks:
-      - microservices
-    healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
-      interval: 10s
-      timeout: 5s
-      retries: 1
+#  eureka-neming-server:
+#    build: ./eureka-neming-server
+#    image: eureka-neming-server:latest
+#    container_name: eureka-neming-server-container
+#    environment:
+#      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+#      - EUREKA_CLIENT_PORT=${EUREKA_CLIENT_PORT}
+#    depends_on:
+#      config-service:
+#        condition: service_healthy
+#    networks:
+#      - microservices
+#    healthcheck:
+#      test: ["CMD-SHELL", "exit 0"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 1
 
-  api-gateway-service:
-    build: ./api-gateway
-    image: api-gateway-service:latest
-    container_name: api-gateway-service-container
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
-      - TOKEN=${TOKEN}
-      - NAME=${NAME}
-      - SECRET=${SECRET}
-      - API_GATEWAY_PORT=${API_GATEWAY_PORT}
-    ports:
-      - ${API_GATEWAY_PORT_EXP}
-    depends_on:
-      eureka-neming-server:
-        condition: service_healthy
-    networks:
-      - microservices
-    healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
-      interval: 10s
-      timeout: 5s
-      retries: 1
+#  api-gateway-service:
+#    build: ./api-gateway
+#    image: api-gateway-service:latest
+#    container_name: api-gateway-service-container
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+#      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+#      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+#      - TOKEN=${TOKEN}
+#      - NAME=${NAME}
+#      - SECRET=${SECRET}
+#      - API_GATEWAY_PORT=${API_GATEWAY_PORT}
+#    ports:
+#      - ${API_GATEWAY_PORT_EXP}
+#    depends_on:
+#      eureka-neming-server:
+#        condition: service_healthy
+#    networks:
+#      - microservices
+#    healthcheck:
+#      test: ["CMD-SHELL", "exit 0"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 1
 
 
-  user-service:
-    build: ./user-service
-    image: user-service:latest
-    container_name: user-service-container
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_URL=${POSTGRES_URL}
-      - TOKEN=${TOKEN}
-      - NAME=${NAME}
-      - SECRET=${SECRET}
-      - USER_SERVICE_POR=${USER_SERVICE_POR}
-    depends_on:
-      api-gateway-service:
-        condition: service_healthy
-      db-postgres:
-        condition: service_healthy
-    networks:
-      - microservices
+#  user-service:
+#    build: ./user-service
+#    image: user-service:latest
+#    container_name: user-service-container
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+#      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+#      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+#      - POSTGRES_USER=${POSTGRES_USER}
+#      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#      - POSTGRES_URL=${POSTGRES_URL}
+#      - TOKEN=${TOKEN}
+#      - NAME=${NAME}
+#      - SECRET=${SECRET}
+#      - USER_SERVICE_POR=${USER_SERVICE_POR}
+#    depends_on:
+#      api-gateway-service:
+#        condition: service_healthy
+#      db-postgres:
+#        condition: service_healthy
+#    networks:
+#      - microservices
 
-  rh-service:
-    build: ./rh-service
-    image: rh-service:latest
-    container_name: rh-service-container
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_URL=${MYSQL_URL}
-      - TOKEN=${TOKEN}
-      - NAME=${NAME}
-      - SECRET=${SECRET}
-      - RH_SERVICE_PORT=${RH_SERVICE_PORT}
-    depends_on:
-      api-gateway-service:
-        condition: service_healthy
-      db-mysql:
-        condition: service_healthy
-    networks:
-      - microservices
+# rh-service:
+#    build: ./rh-service
+#    image: rh-service:latest
+#    container_name: rh-service-container
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+#      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+#      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+#      - MYSQL_USER=${MYSQL_USER}
+#      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+#      - MYSQL_URL=${MYSQL_URL}
+#      - TOKEN=${TOKEN}
+#      - NAME=${NAME}
+#      - SECRET=${SECRET}
+#      - RH_SERVICE_PORT=${RH_SERVICE_PORT}
+#    depends_on:
+#      api-gateway-service:
+#        condition: service_healthy
+#      db-mysql:
+#        condition: service_healthy
+#    networks:
+#      - microservices
 
-  auth-service:
-    build: ./auth-service
-    image: auth-service:latest
-    container_name: auth-service-container
-    environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
-      - TOKEN=${TOKEN}
-      - NAME=${NAME}
-      - SECRET=${SECRET}
-      - AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}
-    depends_on:
-      api-gateway-service:
-        condition: service_healthy
-    networks:
-      - microservices
+#  auth-service:
+#    build: ./auth-service
+#    image: auth-service:latest
+#    container_name: auth-service-container
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+#      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+#      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+#      - TOKEN=${TOKEN}
+#      - NAME=${NAME}
+#      - SECRET=${SECRET}
+#      - AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}
+#    depends_on:
+#      api-gateway-service:
+#        condition: service_healthy
+#    networks:
+#      - microservices
+#
+networks:
+  microservices:
+    external: true
 
 volumes:
   postgres_data:

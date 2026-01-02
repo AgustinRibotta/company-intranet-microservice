@@ -1,0 +1,22 @@
+services:
+  user-service:
+    build: .
+    image: user-service:latest
+    container_name: user-service-container
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_URL=${POSTGRES_URL}
+      - TOKEN=${TOKEN}
+      - NAME=${NAME}
+      - SECRET=${SECRET}
+      - USER_SERVICE_POR=${USER_SERVICE_POR}
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    external: true

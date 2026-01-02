@@ -1,0 +1,26 @@
+services:
+
+  config-service:
+    build: .
+    image: config-service:latest
+    container_name: config-service-container
+    volumes:
+      - ~/.ssh/docker:/root/.ssh/id_rsa:ro
+      - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
+    environment:
+      - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_rsa -o UserKnownHostsFile=/root/.ssh/known_hosts
+      - CONFIG_SERVER_PORT=${CONFIG_SERVER_PORT}
+      - CONFIG_SERVER_GIT=${CONFIG_SERVER_GIT}
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 1
+
+networks:
+  microservices:
+    external: true
+
+

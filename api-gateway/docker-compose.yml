@@ -1,0 +1,26 @@
+services:
+  api-gateway-service:
+    build: .
+    image: api-gateway-service:latest
+    container_name: api-gateway-service-container
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_CLIENT=${EUREKA_CLIENT_URL}
+      - TOKEN=${TOKEN}
+      - NAME=${NAME}
+      - SECRET=${SECRET}
+      - API_GATEWAY_PORT=${API_GATEWAY_PORT}
+    ports:
+      - ${API_GATEWAY_PORT_EXP}
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 1
+
+networks:
+  microservices:
+    external: true

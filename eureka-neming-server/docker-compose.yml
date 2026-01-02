@@ -1,0 +1,20 @@
+services:
+
+  eureka-neming-server:
+    build: .
+    image: eureka-neming-server:latest
+    container_name: eureka-neming-server-container
+    environment:
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_CLIENT_PORT=${EUREKA_CLIENT_PORT}
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 1
+
+networks:
+  microservices:
+    external: true
