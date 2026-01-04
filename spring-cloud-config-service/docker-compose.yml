@@ -5,10 +5,10 @@ services:
     image: config-service:latest
     container_name: config-service-container
     volumes:
-      - ~/.ssh/docker:/root/.ssh/id_rsa:ro
+      - ~/.ssh/docker:/root/.ssh/id_ed25519:ro
       - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
     environment:
-      - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_rsa -o UserKnownHostsFile=/root/.ssh/known_hosts
+      - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_ed25519 -o UserKnownHostsFile=/root/.ssh/known_hosts
       - CONFIG_SERVER_PORT=${CONFIG_SERVER_PORT}
       - CONFIG_SERVER_GIT=${CONFIG_SERVER_GIT}
     networks:
